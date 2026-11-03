@@ -1,0 +1,13 @@
+.build/
+.superpowers/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+*.aux
+*.toc
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.xdv
