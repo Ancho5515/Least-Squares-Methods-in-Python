@@ -45,7 +45,7 @@ Windows PowerShell 激活：.venv\Scripts\Activate.ps1。macOS/Linux 激活：so
 
     python tools/build.py --pdf
 
-输出为 pdf/Least-Squares-Methods-in-Python-zh.pdf。构建脚本拒绝包含错误、未执行或正文修改后结果过期的Notebook。中间文件和编译日志位于 .build/book/，不纳入Git。
+输出为 pdf/Least-Squares-Methods-in-Python-zh.pdf。构建脚本核验正文、保存输出和共享求解器/CSV输入的指纹；拒绝错误、未执行、输出被清空或依赖变化后结果过期的Notebook。中间文件和编译日志位于 .build/book/，不纳入Git。
 
 ## 数据和数值约定
 

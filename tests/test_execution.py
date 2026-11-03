@@ -23,6 +23,7 @@ class ExecutionTests(unittest.TestCase):
         outputs=nb.cells[0].outputs
         self.assertIn('5', ''.join(o.get('text','') for o in outputs))
         self.assertTrue(any('image/png' in o.get('data',{}) for o in outputs))
+        self.assertTrue(any('application/pdf' in o.get('data',{}) for o in outputs))
 
     def test_error_stops_and_does_not_save_partial_result(self):
         proc,nb=self.run_notebook("print('before')\nraise ValueError('expected failure')")

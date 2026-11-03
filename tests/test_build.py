@@ -3,6 +3,8 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import shutil
+import subprocess
 import nbformat
 from tools.build import validate_notebook, notebook_markdown, verify_references, load_manifest
 from tools.run_notebook import source_hash, output_hash, dependency_hash
@@ -69,6 +71,17 @@ class BuildTests(unittest.TestCase):
             self.assertIn('.png',text)
             with self.assertRaises(ValueError):notebook_markdown(n,'../../bad',Path(d),True)
 
+    def test_vector_pdf_is_preferred_to_preview_png(self):
+        n=self.fixture()
+        n.cells[1].outputs=[nbformat.v4.new_output('display_data',
+            data={'application/pdf':base64.b64encode(b'%PDF-1.4\nexample').decode(),
+                  'image/png':base64.b64encode(b'preview').decode()},metadata={})]
+        with tempfile.TemporaryDirectory() as d:
+            text=notebook_markdown(n,'vector',Path(d),True)
+            self.assertEqual(len(list(Path(d).glob('*.pdf'))),1)
+            self.assertEqual(len(list(Path(d).glob('*.png'))),0)
+            self.assertIn('.pdf',text)
+
     def test_manifest_has_exactly_approved_order_and_no_workflows(self):
         root=Path(__file__).resolve().parents[1]
         chapters=load_manifest(root)['chapters']
@@ -80,6 +93,35 @@ class BuildTests(unittest.TestCase):
     def test_archive_checksums(self):
         root=Path(__file__).resolve().parents[1]
         self.assertEqual(verify_references(root),45)
+
+    def test_pdf_template_handles_real_inline_code_and_math(self):
+        if not all(shutil.which(x) for x in ('pandoc','xelatex','kpsewhich')):
+            self.skipTest('optional PDF toolchain not installed')
+        if subprocess.run(['kpsewhich','ctexbook.cls'],capture_output=True).returncode:
+            self.skipTest('optional Chinese TeX components not installed')
+        root=Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory() as d:
+            from PIL import Image
+            from pypdf import PdfReader
+            d=Path(d)
+            Image.new('RGB',(400,200),'gray').save(d/'rectangle.png')
+            (d/'smoke.md').write_text('# 测试\n\nUse '+chr(96)+'python --version'+chr(96)+
+                '.\n\n$$x^2+1=2.$$\n\n![矩形]('+str(d/'rectangle.png')+'){width=88%}\n')
+            subprocess.run(['pandoc',str(d/'smoke.md'),'--standalone','--listings',
+                '--template',str(root/'tools/book-template.tex'),'-V','title=测试',
+                '-V','subtitle=smoke','-o',str(d/'smoke.tex')],check=True,capture_output=True)
+            p=subprocess.run(['xelatex','-interaction=nonstopmode','-halt-on-error',
+                'smoke.tex'],cwd=d,capture_output=True,text=True)
+            self.assertEqual(p.returncode,0,p.stdout[-2500:])
+            self.assertTrue((d/'smoke.pdf').is_file())
+            ratios=[]
+            def visit(op,args,cm,tm):
+                if op==b'Do':
+                    ratios.append(np.hypot(cm[0],cm[1])/np.hypot(cm[2],cm[3]))
+            import numpy as np
+            for page in PdfReader(d/'smoke.pdf').pages:
+                page.extract_text(visitor_operand_before=visit)
+            self.assertTrue(any(abs(r-2)<1e-3 for r in ratios),ratios)
 
 
 if __name__=='__main__':unittest.main()

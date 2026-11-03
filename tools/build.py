@@ -81,11 +81,15 @@ def notebook_markdown(nb,slug,output_dir,skip_setup=True):
                 if output.output_type=='error':
                     raise ValueError('cannot export an error output')
                 data=output.get('data',{})
-                if 'image/png' in data:
-                    name=f'{slug}-{ci}-{oi}.png'
-                    raw=base64.b64decode(data['image/png'],validate=True)
-                    if not raw.startswith(b'\x89PNG\r\n\x1a\n'):
-                        raise ValueError('invalid PNG output')
+                if 'application/pdf' in data or 'image/png' in data:
+                    vector='application/pdf' in data
+                    mime='application/pdf' if vector else 'image/png'
+                    suffix='pdf' if vector else 'png'
+                    name=f'{slug}-{ci}-{oi}.{suffix}'
+                    raw=base64.b64decode(data[mime],validate=True)
+                    magic=b'%PDF-' if vector else b'\x89PNG\r\n\x1a\n'
+                    if not raw.startswith(magic):
+                        raise ValueError('invalid figure output')
                     path=output_dir/name;path.write_bytes(raw)
                     caption=cell.metadata.get('figure_caption','实验结果')
                     parts.append(f'![{caption}]({path.as_posix()}){{width=88%}}')
@@ -125,7 +129,7 @@ def build_pdf(manifest):
              '-V','title='+manifest['title'],'-V','subtitle='+manifest['subtitle']]
     subprocess.run(command,check=True,cwd=ROOT)
     env=os.environ.copy();env.setdefault('SOURCE_DATE_EPOCH','1793635200')
-    proc=subprocess.run(['latexmk','-xelatex','-interaction=nonstopmode','-halt-on-error',
+    proc=subprocess.run(['latexmk','-g','-xelatex','-interaction=nonstopmode','-halt-on-error',
                          'book.tex'],cwd=work,env=env,stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,text=True)
     (work/'compile-output.txt').write_text(proc.stdout,encoding='utf-8')
@@ -160,6 +164,8 @@ def main():
         records.append({'file':name,'sha256':hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),
                         'code_cells':sum(c.cell_type=='code' for c in nb.cells),
                         'figures':sum('image/png' in o.get('data',{})
+                                      for c in nb.cells for o in c.get('outputs',[])),
+                        'vector_figures':sum('application/pdf' in o.get('data',{})
                                       for c in nb.cells for o in c.get('outputs',[])),
                         'engine':nb.metadata.execution.get('engine','unknown')})
     tested=False

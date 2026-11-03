@@ -14,7 +14,7 @@ import nbformat
 import matplotlib
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.utils.capture import capture_output
-from matplotlib_inline.backend_inline import configure_inline_support
+from matplotlib_inline.backend_inline import configure_inline_support, set_matplotlib_formats
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -44,6 +44,8 @@ def execute(path):
     matplotlib.use('module://matplotlib_inline.backend_inline')
     shell = InteractiveShell.instance()
     configure_inline_support(shell, 'inline')
+    matplotlib.rcParams['pdf.fonttype']=42
+    set_matplotlib_formats('png','pdf')
     os.chdir(ROOT)
     count = 0
     for cell in nb.cells:
