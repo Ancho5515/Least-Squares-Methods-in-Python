@@ -15,7 +15,7 @@ import nbformat
 ROOT=Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0,str(ROOT))
-from tools.run_notebook import source_hash
+from tools.run_notebook import source_hash, output_hash, dependency_hash
 
 
 def load_manifest(root=ROOT):
@@ -35,6 +35,10 @@ def validate_notebook(nb):
     nbformat.validate(nb)
     if nb.metadata.get('execution',{}).get('source_sha256')!=source_hash(nb):
         raise ValueError('notebook source changed or has never been executed')
+    if nb.metadata.execution.get('output_sha256')!=output_hash(nb):
+        raise ValueError('saved outputs changed; execute notebook again')
+    if nb.metadata.execution.get('dependency_sha256')!=dependency_hash():
+        raise ValueError('shared solver/data/execution inputs changed; execute notebook again')
     for cell in nb.cells:
         if cell.cell_type=='code':
             if cell.execution_count is None:

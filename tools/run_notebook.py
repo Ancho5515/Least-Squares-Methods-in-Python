@@ -24,6 +24,20 @@ def source_hash(nb):
     return hashlib.sha256(json.dumps(sources,ensure_ascii=False).encode()).hexdigest()
 
 
+def output_hash(nb):
+    values=[(c.execution_count,c.outputs) for c in nb.cells if c.cell_type=='code']
+    return hashlib.sha256(json.dumps(values,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+
+
+def dependency_hash(root=ROOT):
+    root=Path(root)
+    paths=sorted((root/'lsq').glob('*.py'))+sorted((root/'data').glob('*.csv'))
+    paths += [root/'requirements.txt',root/'tools/run_notebook.py']
+    values={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in paths if p.is_file()}
+    return hashlib.sha256(json.dumps(values,sort_keys=True).encode()).hexdigest()
+
+
 def execute(path):
     path = Path(path).resolve()
     nb = nbformat.read(path, as_version=4)
@@ -56,7 +70,9 @@ def execute(path):
         cell.outputs = outputs
     nb.metadata['execution'] = {'engine':'isolated-ipython-process',
                                'python':platform.python_version(),
-                               'source_sha256':source_hash(nb)}
+                               'source_sha256':source_hash(nb),
+                               'output_sha256':output_hash(nb),
+                               'dependency_sha256':dependency_hash()}
     nbformat.validate(nb)
     temporary = path.with_suffix('.ipynb.tmp')
     nbformat.write(nb, temporary)

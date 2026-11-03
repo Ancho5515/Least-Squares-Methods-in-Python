@@ -2,9 +2,10 @@ import base64
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 import nbformat
 from tools.build import validate_notebook, notebook_markdown, verify_references, load_manifest
-from tools.run_notebook import source_hash
+from tools.run_notebook import source_hash, output_hash, dependency_hash
 
 
 class BuildTests(unittest.TestCase):
@@ -13,7 +14,9 @@ class BuildTests(unittest.TestCase):
             nbformat.v4.new_markdown_cell('# Title\n\nText and $x^2$.'),
             nbformat.v4.new_code_cell('print(1)',execution_count=1,
                 outputs=[nbformat.v4.new_output('stream',name='stdout',text='1\n')])])
-        n.metadata['execution']={'source_sha256':source_hash(n)}
+        n.metadata['execution']={'source_sha256':source_hash(n),
+                                 'output_sha256':output_hash(n),
+                                 'dependency_sha256':dependency_hash()}
         return n
 
     def test_rejects_stale_or_unexecuted_notebook(self):
@@ -26,6 +29,17 @@ class BuildTests(unittest.TestCase):
     def test_rejects_saved_errors(self):
         n=self.fixture();n.cells[1].outputs=[nbformat.v4.new_output('error',ename='X',evalue='bad',traceback=[])]
         with self.assertRaises(ValueError):validate_notebook(n)
+
+    def test_rejects_removed_or_altered_output(self):
+        n=self.fixture();n.cells[1].outputs=[]
+        with self.assertRaises(ValueError):validate_notebook(n)
+        n=self.fixture();n.cells[1].outputs[0].text='incorrect output'
+        with self.assertRaises(ValueError):validate_notebook(n)
+
+    def test_rejects_changed_shared_execution_input(self):
+        n=self.fixture()
+        with patch('tools.build.dependency_hash',return_value='changed'):
+            with self.assertRaises(ValueError):validate_notebook(n)
 
     def test_export_contains_code_actual_output_and_display_math(self):
         n=self.fixture()
