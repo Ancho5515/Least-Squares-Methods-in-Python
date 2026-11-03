@@ -1,0 +1,185 @@
+{
+  "version": "0.1",
+  "notebooks": [
+    {
+      "file": "notebooks/00-guide.ipynb",
+      "sha256": "5aafbe70cacd5117a7cabd083ddee5541c6cea9a2a81c6e973dda675d1874e47",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/01-mean-and-line.ipynb",
+      "sha256": "06788a967d3bd8725deaa68c31a8c988452277d774d8692d461043ed93576cc7",
+      "code_cells": 3,
+      "figures": 2,
+      "vector_figures": 2,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/02-models-and-residuals.ipynb",
+      "sha256": "014ea951a9895fcdd8b0bb9060a9a3cd2d78485139a41ad657e7f68b1473a16e",
+      "code_cells": 2,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/03-linear-geometry.ipynb",
+      "sha256": "f1bdc23bb1e21de996257b4570c8e861a6be93c31196b9c1aea254c4239aa5d8",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/04-stable-linear-solves.ipynb",
+      "sha256": "26318d789ebdcb5b8ab44049e37c6acfc13d079a90382bcf45c36eab8d9f7832",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/05-noise-and-weights.ipynb",
+      "sha256": "fccb02d531ec6a93e84c667e2164cf7999cd1c3044c9669eb84a62ed4a9348a0",
+      "code_cells": 3,
+      "figures": 2,
+      "vector_figures": 2,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/06-regularization.ipynb",
+      "sha256": "2ac60aa6229bf487d0957d6541829406311e93653c8756a8972416e57763e120",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/07-nonlinear-foundations.ipynb",
+      "sha256": "f31f48eec06b0af497b573893b259b0c6b4ecf533dfdb7f3b94e3fdbefa856eb",
+      "code_cells": 2,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/08-descent-and-newton.ipynb",
+      "sha256": "f3aa17bb0728b29219518591aaa0281a8d26914e0efb04b31494d0a09092ced6",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/09-gauss-newton.ipynb",
+      "sha256": "5b76fc8e76bfd31dc96fdea495b21dcd069bb75e83ca62386e4fb52da5035c77",
+      "code_cells": 3,
+      "figures": 2,
+      "vector_figures": 2,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/10-levenberg-marquardt.ipynb",
+      "sha256": "f649012a869f2a7e4f3b3e8d75c4956297b6e6d7033d641bf71fb53080b6022b",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/11-trust-region-dogleg.ipynb",
+      "sha256": "b981cdd910c6d20eba153b1d86c0c55bd9d935b62788b6906e0874c8b3104ad7",
+      "code_cells": 3,
+      "figures": 2,
+      "vector_figures": 2,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/12-real-data.ipynb",
+      "sha256": "c6793a877e53307b097adf7a6ca4c22488693f3f0fa9e0eaaf3cc15c01496f1e",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/13-recursive.ipynb",
+      "sha256": "7660fb31510e402548d55713990f6d66e34a0343d5f6caeea045790578d1c90d",
+      "code_cells": 3,
+      "figures": 2,
+      "vector_figures": 2,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/14-calibration-case.ipynb",
+      "sha256": "2c28edb6d9f02922001b577ba1b9753491f03ce7bc47264debc7a43fb52bb391",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/15-pwm-xyz.ipynb",
+      "sha256": "e3b0115446608ecf47b824c06e228a1667087ba182e5b5569e56fb1026f04793",
+      "code_cells": 3,
+      "figures": 2,
+      "vector_figures": 2,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/A-math.ipynb",
+      "sha256": "2170e2883a25430ec4d80003e474bdc8e102c7e896bbfd335560e44e9301415d",
+      "code_cells": 2,
+      "figures": 0,
+      "vector_figures": 0,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/B-algorithm-guide.ipynb",
+      "sha256": "8f16ddd82facfd2eecdd301d14368d78706e3d35ac0cd9e4c0e8babc00db389c",
+      "code_cells": 2,
+      "figures": 0,
+      "vector_figures": 0,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/C-advanced.ipynb",
+      "sha256": "844fad38555939dbae5d1d3fa4a8013b7f9c7a50a52dd6b4feee061c8a2532dd",
+      "code_cells": 3,
+      "figures": 1,
+      "vector_figures": 1,
+      "engine": "isolated-ipython-process"
+    },
+    {
+      "file": "notebooks/D-sources-and-errata.ipynb",
+      "sha256": "b183e95e2d99547b770fa3c5d699a3d074d280ff2c5b1a0c035095a0d37c3d91",
+      "code_cells": 1,
+      "figures": 0,
+      "vector_figures": 0,
+      "engine": "isolated-ipython-process"
+    }
+  ],
+  "reference_files_verified": 45,
+  "test_suite_ran_in_this_build": true,
+  "pdf": {
+    "file": "pdf/Least-Squares-Methods-in-Python-zh.pdf",
+    "pages": 63,
+    "sha256": "6701e174d7ef2bda609a8b5f0ccec6700a92c078343d5915b852cb131067bde8"
+  },
+  "versions": {
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8",
+    "nbformat": "5.11.1",
+    "ipython": "9.18.1",
+    "pypdf": "6.10.0"
+  },
+  "execution_note": "Separate socket-free IPython processes. Jupyter kernel protocol not exercised in restricted host.",
+  "limits": [
+    "Synthetic engineering data only.",
+    "Full hybrid/secant and sparse solvers not implemented in v0.1."
+  ]
+}

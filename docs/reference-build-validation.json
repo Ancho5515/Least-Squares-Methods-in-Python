@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-03",
+  "source": "references/nonlinear-least-squares/source",
+  "procedure": "Compile unmodified source in a temporary copy, then run its verify_project.py",
+  "compiled_pdf_pages": 45,
+  "source_pages": 58,
+  "numbered_equation_components": 77,
+  "examples": 21,
+  "algorithms": 6,
+  "auxiliary_functions": 2,
+  "figure_panels": 10,
+  "errors": [],
+  "limit": "Build/structural verification only; no new full translation or page-by-page review of the reference."
+}

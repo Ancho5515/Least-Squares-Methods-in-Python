@@ -1,0 +1,19 @@
+{
+  "pages": 63,
+  "chapter_destinations": 20,
+  "valid_internal_links": 137,
+  "external_links": 5,
+  "vector_figures": 23,
+  "rendered_pages": 63,
+  "layout_reviewed_pages": 63,
+  "contact_sheets_reviewed": 11,
+  "detail_pages_reviewed": [
+    27,
+    53,
+    57
+  ],
+  "overfull_warnings": 0,
+  "missing_glyph_warnings": 0,
+  "all_chapter_titles_found_by_poppler": true,
+  "pdf_sha256": "6701e174d7ef2bda609a8b5f0ccec6700a92c078343d5915b852cb131067bde8"
+}
