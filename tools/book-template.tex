@@ -1,0 +1,37 @@
+\documentclass[UTF8,a4paper,11pt,openany]{ctexbook}
+\usepackage[margin=23mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{graphicx,booktabs,longtable,array,calc}
+\usepackage{xcolor,listings,enumitem,float}
+\usepackage{hyperref,bookmark,fancyhdr}
+\hypersetup{unicode=true,colorlinks=true,linkcolor=blue!45!black,
+  urlcolor=blue!55!black,pdftitle={$title$},
+  pdfauthor={Least-Squares-Methods-in-Python contributors}}
+\setmonofont{lmmono10-regular.otf}[Scale=0.88]
+\definecolor{codebg}{RGB}{248,249,251}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+  breakatwhitespace=false,columns=fullflexible,keepspaces=true,
+  showstringspaces=false,frame=single,framerule=0.2pt,
+  rulecolor=\color{black!15},backgroundcolor=\color{codebg},
+  aboveskip=0.8em,belowskip=0.8em}
+\setlist{nosep}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.35em}
+\setcounter{tocdepth}{1}
+\floatplacement{figure}{H}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 最小二乘方法：Python交互学习}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.2pt}
+\title{\Huge $title$\\[1em]\Large $subtitle$}
+\author{Ancho5515 / Least-Squares-Methods-in-Python}
+\date{2026年11月3日}
+\begin{document}
+\frontmatter
+\maketitle
+\tableofcontents
+\mainmatter
+$body$
+\end{document}
