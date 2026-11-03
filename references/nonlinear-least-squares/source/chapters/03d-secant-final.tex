@@ -1,0 +1,340 @@
+% 原书第 40 页末尾至第 49 页；第 40 页的 sourcepage 标记由前一分稿提供。
+\section{L--M 法的割线版本}\label{sec:secant-lm}
+本书讨论的方法都假定向量函数 $\mathbf f$ 可微，也就是说，雅可比矩阵
+\[
+  \mathbf J(\mathbf x)=\left[\frac{\partial f_i}{\partial x_j}\right]
+\]
+存在。在许多实际优化问题中，我们无法给出 $\mathbf J$ 中各元素的公式，例如 $\mathbf f$ 是由一个“黑箱”给出的。L--M 法的割线版本就是为这类问题设计的。
+
+\sourcepage{41}
+最简单的补救办法，是用通过\emph{数值微分}得到的矩阵 $\mathbf B$ 代替 $\mathbf J(\mathbf x)$：第 $(i,j)$ 个元素用有限差分近似式
+\begin{equation}
+  \frac{\partial f_i}{\partial x_j}(\mathbf x)
+  \simeq \frac{f_i(\mathbf x+\delta\mathbf e_j)-f_i(\mathbf x)}{\delta}
+  \equiv b_{ij},
+  \tag{3.28}\label{eq:3.28}
+\end{equation}
+来近似。其中，$\mathbf e_j$ 是第 $j$ 个坐标方向上的单位向量，$\delta$ 是一个适当小的实数。采用这种策略，每个迭代点 $\mathbf x$ 都需要计算 $n+1$ 次 $\mathbf f$；而由于 $\delta$ 很可能远小于距离 $\norm{\mathbf x-\mathbf x^*}$，所得到的关于 $\mathbf f$ 全局行为的信息，也不会比仅计算 $\mathbf f(\mathbf x)$ 多出多少。我们希望有更高的效率。
+
+\begin{example}{3.14}
+令 $m=n=1$，考虑一个非线性方程
+\[
+  f:\R\mapsto\R.\qquad \text{求 }\widehat{x}\text{，使 }f(\widehat{x})=0.
+\]
+对于这个问题，可以将牛顿--拉夫森算法（3.6）写成
+\begin{equation}
+  \begin{aligned}
+    &f(x+h)\simeq\ell(h)\equiv f(x)+f'(x)h,\\
+    &\text{求解线性问题 }\ell(h)=0,\\
+    &x_{\mathrm{new}}:=x+h.
+  \end{aligned}
+  \tag{3.29}\label{eq:3.29}
+\end{equation}
+如果无法实现 $f'(x)$，可以用
+\[
+  \bigl(f(x+\delta)-f(x)\bigr)/\delta
+\]
+来近似它，其中 $\delta$ 选取得适当小。更一般地，可以将式~\eqref{eq:3.29} 替换为
+\begin{equation}
+  \begin{aligned}
+    &f(x+h)\simeq\lambda(h)\equiv f(x)+bh,
+      \qquad\text{其中 }b\simeq f'(x),\\
+    &\text{求解线性问题 }\lambda(h)=0,\\
+    &x_{\mathrm{new}}:=x+h.
+  \end{aligned}
+  \tag{3.30a}\label{eq:3.30a}
+\end{equation}
+假定已经知道 $x_{\mathrm{prev}}$ 和 $f(x_{\mathrm{prev}})$。那么，可以通过要求
+\begin{equation}
+  f(x_{\mathrm{prev}})=\lambda(x_{\mathrm{prev}}-x)
+  \tag{3.30b}\label{eq:3.30b}
+\end{equation}
+来确定因子 $b$，也就是 $f'(x)$ 的近似。这给出
+$b=\bigl(f(x)-f(x_{\mathrm{prev}})\bigr)/(x-x_{\mathrm{prev}})$。
+采用这个 $b$，便可看出（3.30）就是\emph{割线法}，例如可参见 Eldén 等（2004）第 70 页及后续内容。
+
+\sourcepage{42}
+与使用另一种有限差分近似的牛顿--拉夫森法相比，割线法的主要优点在于，每次迭代只需计算一次函数值，而不是两次。
+\end{example}
+
+现在，考虑 $\mathbf f:\R^n\mapsto\R^m$ 的线性模型（3.7a），
+\[
+  \mathbf f(\mathbf x+\mathbf h)\simeq\boldsymbol{\ell}(\mathbf h)
+  \equiv\mathbf f(\mathbf x)+\mathbf J(\mathbf x)\mathbf h.
+\]
+我们将其替换为
+\[
+  \mathbf f(\mathbf x+\mathbf h)\simeq\boldsymbol{\lambda}(\mathbf h)
+  \equiv\mathbf f(\mathbf x)+\mathbf B\mathbf h,
+\]
+其中 $\mathbf B$ 是当前对 $\mathbf J(\mathbf x)$ 的近似。在下一次迭代中，需要 $\mathbf B_{\mathrm{new}}$ 满足
+\[
+  \mathbf f(\mathbf x_{\mathrm{new}}+\mathbf h)
+  \simeq\mathbf f(\mathbf x_{\mathrm{new}})+\mathbf B_{\mathrm{new}}\mathbf h.
+\]
+特别地，我们希望当 $\mathbf h=\mathbf x-\mathbf x_{\mathrm{new}}$ 时，这个模型的等式精确成立，即
+\begin{equation}
+  \mathbf f(\mathbf x)=\mathbf f(\mathbf x_{\mathrm{new}})
+    +\mathbf B_{\mathrm{new}}(\mathbf x-\mathbf x_{\mathrm{new}}).
+  \tag{3.31a}\label{eq:3.31a}
+\end{equation}
+这为 $\mathbf B_{\mathrm{new}}$ 中的 $m\cdot n$ 个未知元素给出了 $m$ 个方程，因此还需要更多条件。Broyden（1965）建议，在式~\eqref{eq:3.31a} 之外补充
+\begin{equation}
+  \mathbf B_{\mathrm{new}}\mathbf v=\mathbf B\mathbf v
+  \qquad\text{对所有 }\mathbf v\perp(\mathbf x-\mathbf x_{\mathrm{new}}).
+  \tag{3.31b}\label{eq:3.31b}
+\end{equation}
+容易验证，下面的更新满足条件（3.31a--b）。
+
+\begin{statement}{定义 3.32\quad Broyden 秩一更新}\label{def:3.32}
+\[
+  \mathbf B_{\mathrm{new}}=\mathbf B+\mathbf u\mathbf h^{\T},
+\]
+其中
+\[
+  \mathbf h=\mathbf x_{\mathrm{new}}-\mathbf x,\qquad
+  \mathbf u=\frac{1}{\mathbf h^{\T}\mathbf h}
+    \bigl(\mathbf f(\mathbf x_{\mathrm{new}})-\mathbf f(\mathbf x)-\mathbf B\mathbf h\bigr).
+\]
+\end{statement}
+
+注意，在 $n=1$ 时，条件~\eqref{eq:3.31a} 对应于割线条件~\eqref{eq:3.30b}。我们称这种方法为\emph{广义割线法}。采用这一修改后，算法 3.16 核心部分的简要形式为
+
+\sourcepage{43}
+\[
+  \begin{aligned}
+    &\text{求解 }(\mathbf B^{\T}\mathbf B+\mu\mathbf I)\mathbf h_{\mathrm{slm}}
+       =-\mathbf B^{\T}\mathbf f(\mathbf x),\\
+    &\mathbf x_{\mathrm{new}}:=\mathbf x+\mathbf h_{\mathrm{slm}},\\
+    &\text{按（3.32）更新 }\mathbf B,\\
+    &\text{按算法 3.16 更新 }\mu\text{ 和 }\mathbf x.
+  \end{aligned}
+\]
+Powell 已经证明，如果向量序列 $\mathbf x_0,\mathbf x_1,\mathbf x_2,\ldots$ 收敛到 $\mathbf x^*$，而且步长向量序列 $\{\mathbf h_k\equiv\mathbf x_k-\mathbf x_{k-1}\}$ 满足如下条件：对于每个 $k\geq n$，$\{\mathbf h_{k-n+1},\ldots,\mathbf h_k\}$ 都线性无关，也就是说，它们张成整个 $\R^n$，那么，无论 $\mathbf B_0$ 如何选择，近似矩阵序列 $\{\mathbf B_k\}$ 都收敛到 $\mathbf J(\mathbf x^*)$。
+
+然而，在实际计算中，前 $n$ 个步长向量往往不能张成整个 $\R^n$。因此存在这样一种风险：迭代若干步后，当前 $\mathbf B$ 对真实雅可比矩阵的近似很差，以至于 $-\mathbf B^{\T}\mathbf f(\mathbf x)$ 甚至不是一个下降方向。在这种情况下，$\mathbf x$ 将保持不变，而 $\mu$ 增大。近似矩阵 $\mathbf B$ 虽然也发生改变，但仍可能是一个很差的近似，从而导致 $\mu$ 进一步增大，如此继续下去。最终，$\mathbf h_{\mathrm{slm}}$ 变得很小，使得（3.15b）成立，于是过程停止，尽管此时 $\mathbf x$ 可能还远离 $\mathbf x^*$。
+
+为克服这个问题，人们提出了许多策略，例如偶尔用有限差分重新计算 $\mathbf B$。在下面的算法 3.34 中，除了随迭代过程确定的更新外，我们还加入一组按坐标循环进行的更新：设 $\mathbf h$ 表示当前步长向量，$j$ 表示当前坐标编号。如果 $\mathbf h$ 与 $\mathbf e_j$ 的夹角 $\theta$ “很大”，就计算 $\mathbf J$ 第 $j$ 列的有限差分近似。具体地说，当
+\begin{equation}
+  \cos\theta=\frac{|\mathbf h^{\T}\mathbf e_j|}
+    {\norm{\mathbf h}\cdot\norm{\mathbf e_j}}<\gamma
+  \quad\Longleftrightarrow\quad |h_j|<\gamma\norm{\mathbf h}
+  \tag{3.33}\label{eq:3.33}
+\end{equation}
+时，就进行这个计算。
+
+实验表明，取 $\gamma=0.8$ 这一相当保守的数值，能够获得良好的表现。作此选择时，可以预期每次迭代需要计算向量函数 $\mathbf f$（几乎）两次。
+
+现在可以给出算法了。阻尼参数 $\mu$ 的控制与算法 3.16 相同，为使表达清楚，下面不再列出。
+
+\needspace{24\baselineskip}
+\sourcepage{44}
+\begin{algorithmbox}{3.34}{L--M 法的割线版本}\label{alg:3.34}
+\small
+\begin{tabbing}
+  \qquad\=\qquad\=\qquad\=\qquad\=\kill
+  \textbf{begin}\\
+  \> $k:=0;\quad\mathbf x:=\mathbf x_0;\quad\mathbf B:=\mathbf B_0;\quad j:=0$
+       \qquad $\{1^\circ\}$\\
+  \> $\mathbf g:=\mathbf B^{\T}\mathbf f(\mathbf x);\quad
+       \mathit{found}=(\norm{\mathbf g}_{\infty}\leq\varepsilon_1)$\\
+  \> \textbf{while} $\bigl(\textbf{not }\mathit{found}\bigr)$
+       \textbf{and} $(k<k_{\max})$\\
+  \>\> $k:=k+1;$\quad 求解 $(\mathbf B^{\T}\mathbf B+\mu\mathbf I)\mathbf h=-\mathbf g$\\
+  \>\> \textbf{if} $\norm{\mathbf h}\leq\varepsilon_2(\norm{\mathbf x}+\varepsilon_2)$\\
+  \>\>\> $\mathit{found}:=\mathit{true}$\\
+  \>\> \textbf{else}\\
+  \>\>\> $j:=\operatorname{mod}(j,n)+1;$\quad
+       \textbf{if} $|h_j|<0.8\norm{\mathbf h}$\quad $\{2^\circ\}$\\
+  \>\>\>\> 按（3.32）更新 $\mathbf B$，取 $\mathbf x_{\mathrm{new}}=\mathbf x+\eta\mathbf e_j$
+       \quad $\{3^\circ\}$\\
+  \>\>\> $\mathbf x_{\mathrm{new}}:=\mathbf x+\mathbf h;$\quad 按（3.32）更新 $\mathbf B$\\
+  \>\>\> \textbf{if} $F(\mathbf x_{\mathrm{new}})<F(\mathbf x)$\\
+  \>\>\>\> $\mathbf x:=\mathbf x_{\mathrm{new}}$\\
+  \>\> $\mathbf g:=\mathbf B^{\T}\mathbf f(\mathbf x);\quad
+       \mathit{found}:=(\norm{\mathbf g}_{\infty}\leq\varepsilon_1)$
+       \quad $\{4^\circ\}$\\
+  \textbf{end}
+\end{tabbing}
+\end{algorithmbox}
+
+有以下几点说明：
+\begin{enumerate}[label=$\arabic*^\circ$,leftmargin=2.4em]
+  \item 初始化。$\mathbf x_0$ 为输入值；$\mathbf B_0$ 可以作为输入给出，也可以由式~\eqref{eq:3.28} 计算。停止准则（3.15）中的参数，以及式~\eqref{eq:3.28} 所用的步长 $\delta$，同样都是输入值。
+  \item 参见式~\eqref{eq:3.33}。$\operatorname{mod}(j,n)$ 是 $j$ 除以 $n$ 所得的余数。
+  \item 步长 $\eta$ 由下式给出：
+    \[
+      \textbf{if }x_j=0\ \textbf{then }\eta:=\delta^2
+      \ \textbf{else }\eta:=\delta|x_j|.
+    \]
+  \item 迭代点 $\mathbf x$ 只有在满足下降条件（2.1）时才更新，而近似矩阵 $\mathbf B$ 每一步都更新。因此，即使 $\mathbf f(\mathbf x)$ 保持不变，近似梯度 $\mathbf g$ 也可能发生改变。
+\end{enumerate}
+
+\begin{example}{3.15}
+我们将算法 3.34 用于例 3.13 中 $\lambda=0$ 的修改 Rosenbrock 问题。如果使用与该例相同的初始点和停止准则，并在差分近似
+\sourcepage{45}
+式~\eqref{eq:3.28} 中取 $\delta=10^{-7}$，那么经 29 次迭代后得到解，总共计算了 53 次 $\mathbf f(\mathbf x)$。相比之下，“真正的”L--M 算法只需要 17 步，也就是总共计算 18 次 $\mathbf f(\mathbf x)$ 和 $\mathbf J(\mathbf x)$。
+
+我们还将割线算法用于例 1.1、3.7 和 3.11 中的数据拟合问题。取 $\delta=10^{-7}$，并使用与例 3.7 相同的初始点和停止准则，迭代经过 94 步后因满足（3.15a）而停止，总共计算了 192 次 $\mathbf f(\mathbf x)$。相比之下，算法 3.16 需要 62 次迭代。
+
+这两个问题表明，算法 3.34 是稳健的；同时也说明了一条普遍的经验法则：如果能够获得梯度信息，使用它通常是划算的。
+\end{example}
+
+在许多应用中，$m$ 和 $n$ 都很大，但每个函数 $f_i(\mathbf x)$ 只依赖于 $\mathbf x$ 中的少数几个元素。此时，大多数 $\frac{\partial f_i}{\partial x_j}(\mathbf x)$ 都为零，我们称 $\mathbf J(\mathbf x)$ 为\emph{稀疏矩阵}。对于 Levenberg--Marquardt 方程（3.13）的求解，已有利用稀疏性的高效方法，例如可参见 Nielsen（1997）。然而，在更新公式（3.32）中，向量 $\mathbf h$ 和 $\mathbf u$ 的元素通常全部非零，因此 $\mathbf B_{\mathrm{new}}$ 将成为稠密矩阵。如何处理这种情况，超出了本书的范围；读者可参见 Gill 等（1984）和 Toint（1987）。
+
+\section{Dog Leg 法的割线版本}\label{sec:secant-dogleg}
+当然，采用雅可比矩阵割线近似的思想，也可以用于第 3.3 节的 Dog Leg 法。本节考虑 $m=n$ 这一特殊情形，也就是求解非线性方程组。Broyden（1965）不仅给出了定义 3.32 中用于更新近似雅可比矩阵的公式
+\begin{equation}
+  \begin{aligned}
+    \mathbf B_{\mathrm{new}}&=\mathbf B+
+      \left(\frac{1}{\mathbf h^{\T}\mathbf h}(\mathbf y-\mathbf B\mathbf h)\right)\mathbf h^{\T},\\
+    &\text{其中 }\mathbf h=\mathbf x_{\mathrm{new}}-\mathbf x,\qquad
+      \mathbf y=\mathbf f(\mathbf x_{\mathrm{new}})-\mathbf f(\mathbf x),
+  \end{aligned}
+  \tag{3.35a}\label{eq:3.35a}
+\end{equation}
+还给出了更新雅可比矩阵近似逆 $\mathbf D\simeq\mathbf J(\mathbf x)^{-1}$ 的公式。该公式为
+
+\sourcepage{46}
+\begin{equation}
+  \mathbf D_{\mathrm{new}}=\mathbf D+
+    \left(\frac{1}{\mathbf h^{\T}\mathbf D\mathbf y}(\mathbf h-\mathbf D\mathbf y)\right)
+    (\mathbf h^{\T}\mathbf D),
+  \tag{3.35b}\label{eq:3.35b}
+\end{equation}
+其中 $\mathbf h$ 和 $\mathbf y$ 的定义见式~\eqref{eq:3.35a}。
+
+利用这些矩阵，可以将最速下降方向 $\mathbf h_{\mathrm{sd}}$ 和 Gauss--Newton 步 $\mathbf h_{\mathrm{gn}}$（3.18）近似为
+\begin{equation}
+  \mathbf h_{\mathrm{ssd}}=-\mathbf B^{\T}\mathbf f(\mathbf x),
+  \qquad\text{以及}\qquad
+  \mathbf h_{\mathrm{sgn}}=-\mathbf D\mathbf f(\mathbf x).
+  \tag{3.36}\label{eq:3.36}
+\end{equation}
+在这里，Gauss--Newton 步与牛顿步相同，参见例 3.5。
+
+只需稍作修改，算法 3.21 就可以使用这些近似。初始矩阵 $\mathbf B=\mathbf B_0$ 可以由差分近似式~\eqref{eq:3.28} 得到，而 $\mathbf D_0$ 则计算为 $\mathbf B_0^{-1}$。容易证明，此后当前的 $\mathbf B$ 和 $\mathbf D$ 满足 $\mathbf B\mathbf D=\mathbf I$。步长参数 $\alpha$ 由式（3.19）求得，其中将 $\mathbf J(\mathbf x)$ 替换为 $\mathbf B$。
+
+与 L--M 法的割线版本相同，这个方法也需要额外的更新，以使 $\mathbf B$ 和 $\mathbf D$ 始终分别是当前雅可比矩阵及其逆的良好近似。我们发现，围绕式~\eqref{eq:3.33} 所讨论的策略，在这里也很有效。还应指出，式~\eqref{eq:3.35b} 中的分母可能为零或非常小。如果
+\[
+  \left|\mathbf h^{\T}\mathbf D\mathbf y\right.
+    <\sqrt{\varepsilon_M}\,\norm{\mathbf h},
+\]
+就不再更新 $\mathbf D$，而是将其计算为 $\mathbf D=\mathbf B^{-1}$。
+
+每次按式（3.35）更新的“代价”为 $10n^2$ 次浮点运算\footnote[6]{一次“浮点运算”（flop）是两个浮点数之间的一次简单算术运算。}；而利用式~\eqref{eq:3.36} 计算两个步长向量，再加上按式（3.19）计算 $\alpha$，需要 $6n^2$ 次浮点运算。因此，Dog Leg 法的无梯度版本每次迭代的代价约为 $16n^2$ 次浮点运算，再加上计算 $\mathbf f(\mathbf x_{\mathrm{new}})$ 的代价。相比之下，算法 3.21 每一步的代价约为 $\frac{2}{3}n^3+6n^2$ 次浮点运算，再加上计算 $\mathbf f(\mathbf x_{\mathrm{new}})$ 和 $\mathbf J(\mathbf x_{\mathrm{new}})$ 的代价。因此，当 $n$ 很大时，无梯度版本每一步的代价更低。然而，它所需的迭代次数往往多得多；如果能够获得雅可比矩阵，采用梯度的版本通常更快。
+
+\sourcepage{47}
+\begin{example}{3.16}
+我们将算法 3.21 和无梯度 Dog Leg 法用于 Rosenbrock 函数 $\mathbf f:\R^2\mapsto\R^2$，其定义为
+\[
+  \mathbf f(\mathbf x)=
+    \begin{bmatrix}10(x_2-x_1^2)\\1-x_1\end{bmatrix},
+\]
+参见例 3.13。该函数只有一个根，$\mathbf x^*=[\,1,1\,]^{\T}$。对于两种方法，我们都采用初始点 $\mathbf x_0=[\,-1.2,1\,]^{\T}$，在停止准则（3.15）中取 $\varepsilon_1=\varepsilon_2=10^{-12}$、$k_{\max}=100$，并在式~\eqref{eq:3.28} 中取 $\delta=10^{-7}$。算法 3.21 经 17 次迭代后在解处停止，也就是说，计算了 18 次 $\mathbf f$ 及其雅可比矩阵。割线版本同样在解处停止；它需要 28 次迭代，总共计算了 49 次 $\mathbf f$。
+\end{example}
+
+\section{最后说明}\label{sec:final-remarks}
+我们已经讨论了多种求解非线性最小二乘问题的算法。任何好的程序库中都有这些算法，也可以通过 GAMS（Guide to Available Mathematical Software，可用数学软件指南）查找相应的实现，其网址为
+\begin{center}
+  \url{http://gams.nist.gov}
+\end{center}
+本书中的例子使用 MATLAB 进行计算。相关程序包含在工具箱 immoptibox 中，可从下列网址获得：
+\begin{center}
+  \url{http://www.imm.dtu.dk/~hbn/immoptibox}
+\end{center}
+最后还应指出，有时重新表述问题，可以使问题更容易求解。下面用几个例子说明这一点，其中的思想也可能适用于读者自己的问题。
+
+\begin{example}{3.17}
+在例 3.2、3.8 和 3.10 的 Powell 问题中，变量 $x_2$ 只以 $x_2^2$ 的形式出现。可以引入新变量 $\mathbf z=[\,x_1,x_2^2\,]^{\T}$，问题便成为：求 $\mathbf z^*\in\R^2$，使 $\mathbf f(\mathbf z^*)=\mathbf0$，其中
+\[
+  \mathbf f(\mathbf z)=
+    \begin{bmatrix}z_1\\\dfrac{10z_1}{z_1+0.1}+2z_2\end{bmatrix},
+  \qquad\text{且}\qquad
+  \mathbf J(\mathbf z)=
+    \begin{bmatrix}1&0\\(z_1+0.1)^{-2}&2\end{bmatrix}.
+\]
+这个雅可比矩阵对所有 $\mathbf z$ 都非奇异。使用 L--M 算法 3.16，取初始点 $\mathbf z_0=[\,3,1\,]^{\T}$、$\tau=10^{-16}$，并在停止准则
+\sourcepage{48}
+（3.15）中取 $\varepsilon_1=\varepsilon_2=10^{-15}$，经 3 步后停止，得到
+\mbox{$\mathbf z\simeq[\,\text{\ttfamily -1.40e-25},\text{\ttfamily 9.77e-25}\,]^{\T}$}。
+这是对 $\mathbf z^*=\mathbf0$ 的良好近似。
+\end{example}
+
+\begin{example}{3.18}
+例 1.1、3.7 和 3.11 中的数据拟合问题可以重新表述为仅含两个参数 $x_1$ 和 $x_2$ 的问题：将模型写成
+\[
+  M(\mathbf x,t)=c_1\mathrm e^{x_1t}+c_2\mathrm e^{x_2t},
+\]
+其中，对给定的 $\mathbf x$，向量 $\mathbf c=\mathbf c(\mathbf x)\in\R^2$ 是线性问题
+\[
+  \mathbf E\mathbf c\simeq\mathbf y
+\]
+的最小二乘解。这里，$\mathbf E=\mathbf E(\mathbf x)\in\R^{m\times2}$ 的各行由
+$(\mathbf E)_{i,:}=[\,\mathrm e^{x_1t_i}\ \mathrm e^{x_2t_i}\,]$
+给出。与例 1.1 一样，函数 $\mathbf f$ 的定义为 $f_i(\mathbf x)=y_i-M(\mathbf x,t_i)$，从而有
+\[
+  \mathbf f(\mathbf x)=\mathbf y-\mathbf E(\mathbf x)\mathbf c(\mathbf x).
+\]
+可以证明，其雅可比矩阵为
+\[
+  \mathbf J=-\mathbf E\mathbf G-\mathbf H[\mathbf c],
+\]
+其中，对于任意向量 $\mathbf u$，定义对角矩阵 $[\mathbf u]=\operatorname{diag}(\mathbf u)$，并且
+\[
+  \mathbf H=[\mathbf t]\mathbf E,\qquad
+  \mathbf G=(\mathbf E^{\T}\mathbf E)^{-1}
+    \bigl([\mathbf H^{\T}\mathbf f]-\mathbf H^{\T}\mathbf E[\mathbf c]\bigr).
+\]
+算法 3.16 使用与例 3.7 相同的较差初值 $\mathbf x_0=[\,-1,-2\,]^{\T}$，并取 $\tau=10^{-3}$、$\varepsilon_1=\varepsilon_2=10^{-8}$，经过 13 次迭代便找到解 $\mathbf x\simeq[\,-4,-5\,]^{\T}$；所用的步数约为四参数模型所需步数的 $\frac15$。
+
+这种方法可以推广到部分参数以线性形式出现的任何模型。它称为\emph{可分最小二乘法}，例如 Nielsen（2000）以及 Golub 和 Pereyra（2003）对此有讨论。
+\end{example}
+
+\begin{example}{3.19}
+最后一个例子说明最小二乘问题中经常遇到的一种困难：通常，对问题进行缩放，使所有非零的 $|x_j^*|$ 都具有相同的数量级时，算法的表现最好。
+
+考虑所谓的 Meyer 问题
+\[
+  f_i(\mathbf x)=y_i-x_1\exp\left(\frac{x_2}{t_i+x_3}\right),
+  \qquad i=1,\ldots,16,
+\]
+\sourcepage{49}
+其中 $t_i=45+5i$，且
+\begin{center}
+  \begin{tabular}{rr|rr|rr}
+    \hline
+    $i$ & $y_i$ & $i$ & $y_i$ & $i$ & $y_i$\\
+    \hline
+    1 & 34780 & 7  & 11540 & 12 & 5147\\
+    2 & 28610 & 8  & 9744  & 13 & 4427\\
+    3 & 23650 & 9  & 8261  & 14 & 3820\\
+    4 & 19630 & 10 & 7030  & 15 & 3307\\
+    5 & 16370 & 11 & 6005  & 16 & 2872\\
+    6 & 13720 &    &       &    &     \\
+    \hline
+  \end{tabular}
+\end{center}
+极小点为
+$\mathbf x^*\simeq[\,5.61\cdot10^{-3}\quad6.18\cdot10^3\quad3.45\cdot10^2\,]^{\T}$，
+且 $F(\mathbf x^*)\simeq43.97$。
+
+另一种表述为
+\[
+  \phi_i(\mathbf x)=10^{-3}y_i-z_1
+    \exp\left(\frac{10z_2}{u_i+z_3}-13\right),
+  \qquad i=1,\ldots,16,
+\]
+其中 $u_i=0.45+0.05i$。这个重新表述的形式对应于
+$\mathbf z=[\,10^{-3}\mathrm e^{13}x_1\quad10^{-3}x_2\quad10^{-2}x_3\,]^{\T}$，
+其极小点为 $\mathbf z^*\simeq[\,2.48\quad6.18\quad3.45\,]^{\T}$，且
+$\Phi(\mathbf x^*)\simeq4.397\cdot10^{-5}$。
+
+如果使用算法 3.16，取 $\tau=1$、$\varepsilon_1=10^{-6}$、$\varepsilon_2=10^{-10}$，并采用等价的初始向量
+\[
+  \mathbf x_0=[\,2\cdot10^{-2}\quad4\cdot10^3\quad2.5\cdot10^2\,]^{\T},
+  \qquad
+  \mathbf z_0=[\,8.85\quad4\quad2.5\,]^{\T},
+\]
+那么，第一种表述下的迭代经过 175 步后因满足（3.15b）而停止；经过良好缩放的表述则在 88 步后因满足（3.15a）而停止。
+\end{example}

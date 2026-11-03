@@ -1,0 +1,319 @@
+% 原书印刷页 50–58；附录、参考文献与完整索引。
+\chapter*{附录}
+\addcontentsline{toc}{chapter}{附录}
+\markboth{附录}{附录}
+\sourcepage{50}
+\section*{A.\quad 对称正定矩阵}
+\addcontentsline{toc}{section}{A. 对称正定矩阵}
+\label{app:A}
+
+若矩阵 $\mathbf{A}\in\R^{n\times n}$ 满足 $\mathbf{A}=\mathbf{A}^{\T}$，即对所有 $i,j$ 都有 $a_{ij}=a_{ji}$，则称 $\mathbf{A}$ 为对称矩阵。
+
+\begin{statement}{定义 A.1}
+对称矩阵 $\mathbf{A}\in\R^{n\times n}$ 称为
+\[
+\begin{aligned}
+ &\text{正定，}\qquad&&\text{若 }\mathbf{x}^{\T}\mathbf{A}\mathbf{x}>0
+   &&\text{对所有 }\mathbf{x}\in\R^n,\ \mathbf{x}\ne\mathbf{0};\\
+ &\text{半正定，}&&\text{若 }\mathbf{x}^{\T}\mathbf{A}\mathbf{x}\ge0
+   &&\text{对所有 }\mathbf{x}\in\R^n,\ \mathbf{x}\ne\mathbf{0}.
+\end{aligned}
+\]
+\end{statement}
+
+这类矩阵的一些有用性质列于下文的定理 A.2。将几乎任意一本线性代数教材和数值线性代数教材中的有关定理结合起来，就可以得到其证明。在本附录末尾，我们给出该定理的一些实际推论。
+
+现在，给定 $\mathbf{J}\in\R^{m\times n}$，并令
+\[
+ \mathbf{A}=\mathbf{J}^{\T}\mathbf{J}.
+\]
+于是 $\mathbf{A}^{\T}=\mathbf{J}^{\T}(\mathbf{J}^{\T})^{\T}=\mathbf{A}$，即 $\mathbf{A}$ 对称。此外，对任意非零的 $\mathbf{x}\in\R^n$，令 $\mathbf{y}=\mathbf{J}\mathbf{x}$。于是
+\[
+ \mathbf{x}^{\T}\mathbf{A}\mathbf{x}
+ =\mathbf{x}^{\T}\mathbf{J}^{\T}\mathbf{J}\mathbf{x}
+ =\mathbf{y}^{\T}\mathbf{y}\ge0,
+\]
+这表明 $\mathbf{A}$ 半正定。如果 $m\ge n$，且 $\mathbf{J}$ 的各列线性无关，则 $\mathbf{x}\ne\mathbf{0}\Rightarrow\mathbf{y}\ne\mathbf{0}$，从而 $\mathbf{y}^{\T}\mathbf{y}>0$。因此，在这种情况下 $\mathbf{A}$ 正定。
+
+由下文的式~\eqref{eq:A.3} 立即可得
+\[
+ (\mathbf{A}+\mu\mathbf{I})\mathbf{v}_j=(\lambda_j+\mu)\mathbf{v}_j,
+ \qquad j=1,\ldots,n,
+\]
+其中 $\mu\in\R$ 可以任意选取。将这一点与定理 A.2 的第 $2^\circ$ 条结合可知，如果 $\mathbf{A}$ 对称且半正定，并且 $\mu>0$，则矩阵 $\mathbf{A}+\mu\mathbf{I}$ 也对称，而且保证正定。
+
+\needspace{24\baselineskip}
+\sourcepage{51}
+\begin{statement}{定理 A.2}
+设 $\mathbf{A}\in\R^{n\times n}$ 为对称矩阵，且 $\mathbf{A}=\mathbf{L}\mathbf{U}$，其中 $\mathbf{L}$ 为单位下三角矩阵，$\mathbf{U}$ 为上三角矩阵。此外，令 $\{(\lambda_j,\mathbf{v}_j)\}_{j=1}^{n}$ 表示 $\mathbf{A}$ 的特征解，即
+\begin{equation}
+ \mathbf{A}\mathbf{v}_j=\lambda_j\mathbf{v}_j,\qquad j=1,\ldots,n.
+ \tag{A.3}\label{eq:A.3}
+\end{equation}
+则
+\begin{enumerate}[label={\arabic*$^\circ$},leftmargin=2em]
+ \item 特征值均为实数，即 $\lambda_j\in\R$，且特征向量 $\{\mathbf{v}_j\}$ 构成 $\R^n$ 的一组标准正交基。
+ \item 以下命题等价：
+ \begin{enumerate}[label={\alph*)},leftmargin=2em]
+  \item $\mathbf{A}$ 正定（半正定）；
+  \item 所有 $\lambda_j>0$（$\lambda_j\ge0$）；
+  \item 所有 $u_{ii}>0$（$u_{ii}\ge0$）。
+ \end{enumerate}
+\end{enumerate}
+如果 $\mathbf{A}$ 正定，则
+\begin{enumerate}[label={\arabic*$^\circ$},leftmargin=2em,start=3]
+ \item $\mathrm{LU}$ 分解在数值上稳定。
+ \item $\mathbf{U}=\mathbf{D}\mathbf{L}^{\T}$，其中 $\mathbf{D}=\operatorname{diag}(u_{ii})$。
+ \item $\mathbf{A}=\mathbf{C}^{\T}\mathbf{C}$，即 Cholesky 分解。其中 $\mathbf{C}\in\R^{n\times n}$ 为上三角矩阵。
+\end{enumerate}
+\end{statement}
+
+对称矩阵 $\mathbf{A}$ 的条件数为
+\[
+ \kappa_2(\mathbf{A})=\frac{\max\{|\lambda_j|\}}{\min\{|\lambda_j|\}}.
+\]
+如果 $\mathbf{A}$ 正定或半正定，并且 $\mu>0$，则
+\[
+ \kappa_2(\mathbf{A}+\mu\mathbf{I})
+ =\frac{\max\{\lambda_j\}+\mu}{\min\{\lambda_j\}+\mu}
+ \le\frac{\max\{\lambda_j\}+\mu}{\mu},
+\]
+这是 $\mu$ 的一个递减函数。
+
+最后，对定理 A.2 作几点说明，并给出一些实际细节。单位下三角矩阵 $\mathbf{L}$ 的特征是 $\ell_{ii}=1$，且当 $j>i$ 时 $\ell_{ij}=0$。注意，$\mathrm{LU}$ 分解 $\mathbf{A}=\mathbf{L}\mathbf{U}$ 不进行主元选取。还要注意，第 $4^\circ$--$5^\circ$ 条给出了 $\mathrm{LU}$ 分解与 Cholesky 分解之间的以下关系：
+\sourcepage{52}
+\[
+ \mathbf{A}=\mathbf{L}\mathbf{U}=\mathbf{L}\mathbf{D}\mathbf{L}^{\T}=\mathbf{C}^{\T}\mathbf{C},
+\]
+由此可知
+\[
+ \mathbf{C}=\mathbf{D}^{1/2}\mathbf{L}^{\T},\qquad
+ \text{其中 }\mathbf{D}^{1/2}=\operatorname{diag}(\sqrt{u_{ii}}).
+\]
+Cholesky 分解可以用以下算法直接计算（即不需要中间结果 $\mathbf{L}$ 和 $\mathbf{U}$），其中还包含正定性检验。
+
+\needspace{18\baselineskip}
+\begin{algorithmbox}{A.4}{Cholesky 分解}
+\begin{tabbing}
+\hspace{1.2em}\=\hspace{1.2em}\=\hspace{1.2em}\=\hspace{1.2em}\=\kill
+\textbf{begin}\\
+\> $k:=0;\quad \mathit{posdef}:=\mathrm{true}$ \quad \{初始化\}\\
+\> \textbf{while} $\mathit{posdef}$ \textbf{and} $k<n$\\
+\>\> $k:=k+1;\quad d:=a_{kk}-\sum_{i=1}^{k-1}c_{ik}^{2}$\\
+\>\> \textbf{if} $d>0$ \quad \{正定性检验\}\\
+\>\>\> $c_{kk}:=\sqrt{d}$ \quad \{对角元素\}\\
+\>\>\> \textbf{for} $j:=k+1,\ldots,n$\\
+\>\>\>\> $c_{kj}:=\bigl(a_{kj}-\sum_{i=1}^{k-1}c_{ij}c_{ik}\bigr)/c_{kk}$ \quad \{主对角线上方的元素\}\\
+\>\> \textbf{else}\\
+\>\>\> $\mathit{posdef}:=\mathrm{false}$\\
+\textbf{end}
+\end{tabbing}
+\end{algorithmbox}
+
+这一算法的“计算成本”约为 $\tfrac13n^3$ 次浮点运算。求得 $\mathbf{C}$ 后，可分别对
+\[
+ \mathbf{C}^{\T}\mathbf{z}=\mathbf{b}\qquad\text{和}\qquad\mathbf{C}\mathbf{x}=\mathbf{z}
+\]
+进行前代和回代，从而求解方程组 $\mathbf{A}\mathbf{x}=\mathbf{b}$。这两步各需约 $n^2$ 次浮点运算。
+
+\section*{B.\quad 最小范数最小二乘解}
+\addcontentsline{toc}{section}{B. 最小范数最小二乘解}
+\label{app:B}
+
+考虑如下最小二乘问题：给定 $\mathbf{A}\in\R^{m\times n}$，其中 $m\ge n$，以及 $\mathbf{b}\in\R^m$，求 $\mathbf{h}\in\R^n$，使
+\[
+ \norm{\mathbf{b}-\mathbf{A}\mathbf{h}}
+\]
+最小。为分析这个问题，我们将使用 $\mathbf{A}$ 的奇异值分解（SVD），
+\begin{equation}
+ \mathbf{A}=\mathbf{U}\bm{\Sigma}\mathbf{V}^{\T},
+ \tag{B.1}\label{eq:B.1}
+\end{equation}
+其中矩阵 $\mathbf{U}\in\R^{m\times m}$ 和 $\mathbf{V}\in\R^{n\times n}$ 是正交矩阵，并且
+\sourcepage{53}
+\[
+ \bm{\Sigma}=\left[
+ \begin{array}{ccc}
+ \sigma_1&&\\
+ &\ddots&\\
+ &&\sigma_n\\[0.5ex]
+ \multicolumn{3}{c}{\mathbf{0}}
+ \end{array}\right],
+ \quad\text{其中 }\sigma_1\ge\cdots\ge\sigma_p>0,\quad
+ \sigma_{p+1}=\cdots=\sigma_n=0.
+\]
+$\sigma_j$ 是奇异值。数 $p$ 是 $\mathbf{A}$ 的秩，等于子空间 $\mathcal{R}(\mathbf{A})\subseteq\R^m$（即所谓 $\mathbf{A}$ 的值域）的维数；这一子空间包含 $\mathbf{A}$ 各列的所有可能线性组合。
+
+令 $\{\mathbf{u}_j\}_{j=1}^{m}$ 和 $\{\mathbf{v}_j\}_{j=1}^{n}$ 分别表示 $\mathbf{U}$ 和 $\mathbf{V}$ 的列。由于这两个矩阵正交，这些向量构成两组标准正交向量，即
+\begin{equation}
+ \mathbf{u}_i^{\T}\mathbf{u}_j=\mathbf{v}_i^{\T}\mathbf{v}_j=
+ \begin{cases}
+  1,&i=j,\\
+  0,&\text{其他情况}.
+ \end{cases}
+ \tag{B.2}\label{eq:B.2}
+\end{equation}
+
+由式~\eqref{eq:B.1} 和~\eqref{eq:B.2} 可得
+\begin{equation}
+ \mathbf{A}=\sum_{j=1}^{p}\sigma_j\mathbf{u}_j\mathbf{v}_j
+ \qquad\text{且}\qquad
+ \mathbf{A}\mathbf{v}_k=\sigma_k\mathbf{u}_k,\quad k=1,\ldots,n.
+ \tag{B.3}\label{eq:B.3}
+\end{equation}
+
+$\{\mathbf{u}_j\}$ 和 $\{\mathbf{v}_j\}$ 可以分别用作 $\R^m$ 和 $\R^n$ 的标准正交基，因此可写成
+\begin{equation}
+ \mathbf{b}=\sum_{j=1}^{m}\beta_j\mathbf{u}_j,\qquad
+ \mathbf{h}=\sum_{i=1}^{n}\eta_i\mathbf{v}_i,
+ \tag{B.4}\label{eq:B.4}
+\end{equation}
+利用式~\eqref{eq:B.3}，得到
+\[
+ \mathbf{r}=\mathbf{b}-\mathbf{A}\mathbf{h}
+ =\sum_{j=1}^{p}(\beta_j-\sigma_j\eta_j)\mathbf{u}_j
+  +\sum_{j=p+1}^{m}\beta_j\mathbf{u}_j,
+\]
+再利用式~\eqref{eq:B.2}，可得
+\begin{equation}
+ \norm{\mathbf{r}}^2=\mathbf{r}^{\T}\mathbf{r}
+ =\sum_{j=1}^{p}(\beta_j-\sigma_j\eta_j)^2
+  +\sum_{j=p+1}^{m}\beta_j^2.
+ \tag{B.5}\label{eq:B.5}
+\end{equation}
+上式在以下条件下达到最小值：
+\[
+ \beta_j-\sigma_j\eta_j=0,\qquad j=1,\ldots,p.
+\]
+
+\sourcepage{54}
+因此，最小二乘解可以表示为
+\[
+ \mathbf{h}^{*}=\sum_{j=1}^{p}\frac{\beta_j}{\sigma_j}\mathbf{v}_j
+ +\sum_{j=p+1}^{n}\eta_j\mathbf{v}_j.
+\]
+当 $p<n$ 时，最小二乘解有 $n-p$ 个自由度，即 $\eta_{p+1},\ldots,\eta_n$ 可以任意选取。与式~\eqref{eq:B.5} 附近的讨论类似可知，当 $\eta_{p+1}=\cdots=\eta_n=0$ 时，$\norm{\mathbf{h}^{*}}$ 达到最小值。与自由参数的这一选取相对应的解，就是所谓的最小范数解，
+\[
+ \mathbf{h}_{\min}^{*}
+ =\sum_{j=1}^{p}\frac{\beta_j}{\sigma_j}\mathbf{v}_j
+ =\sum_{j=1}^{p}\frac{\mathbf{u}_j^{\T}\mathbf{b}}{\sigma_j}\mathbf{v}_j.
+\]
+最后一个等式由式~\eqref{eq:B.4} 和~\eqref{eq:B.2} 得到。
+
+\chapter*{参考文献}
+\addcontentsline{toc}{chapter}{参考文献}
+\markboth{参考文献}{参考文献}
+\sourcepage{55}
+\begin{enumerate}[label={\arabic*.},leftmargin=2.3em,itemsep=0.6em]
+ \item M. Al-Baali 和 R. Fletcher（1985）：非线性最小二乘的变分方法。\emph{J. Opl. Res. Soc.} \textbf{36}，第 5 期，第 405--421 页。
+ \item C.G. Broyden（1965）：一类求解非线性联立方程的方法。\emph{Maths. Comp.} \textbf{19}，第 577--593 页。
+ \item J.E. Dennis, Jr. 和 R.B. Schnabel（1983）：无约束优化与非线性方程的数值方法。Prentice Hall。
+ \item L. Eldén、L. Wittmeyer-Koch 和 H.B. Nielsen（2004）：数值计算导论——分析及 MATLAB 示例。待出版。
+ \item P.E. Frandsen、K. Jonasson、H.B. Nielsen 和 O. Tingleff（2004）：无约束优化，第 3 版。IMM，DTU。可从以下网址获取：\\
+ \url{http://www.imm.dtu.dk/courses/02611/uncon.pdf}
+ \item P.E. Gill、W. Murray、M.A. Saunders 和 M.H. Wright（1984）：优化中的稀疏矩阵方法。\emph{SIAM J.S.S.C.} \textbf{5}，第 562--589 页。
+ \item G. Golub 和 V. Pereyra（2003）：可分离非线性最小二乘：变量投影法及其应用。\emph{Inverse Problems} \textbf{19}，第 R1--R26 页。
+ \item G. Golub 和 C.F. Van Loan（1996）：矩阵计算，第 3 版。John Hopkins Press。
+ \item K. Levenberg（1944）：某些最小二乘问题的一种求解方法。\emph{Quart. Appl. Math.} \textbf{2}，第 164--168 页。
+ \item K. Madsen（1988）：一种结合高斯--牛顿法与拟牛顿法的非线性最小二乘方法。数值分析研究所（现为 IMM 的一部分），DTU。报告 NI-88-10。
+ \item K. Madsen 和 H.B. Nielsen（2002）：02611 优化与数据拟合课程补充讲义。IMM，DTU。可从以下网址获取：\\
+ \url{http://www.imm.dtu.dk/courses/02611/SN.pdf}
+\end{enumerate}
+
+\sourcepage{56}
+\begin{enumerate}[label={\arabic*.},leftmargin=2.3em,itemsep=0.6em,start=12]
+ \item K. Madsen、H.B. Nielsen 和 J. Søndergaard（2002）：非线性优化的稳健子程序。IMM，DTU。报告 IMM-REP-2002-02。可从以下网址获取：\\
+ \url{http://www.imm.dtu.dk/~km/F_package/robust.pdf}
+ \item K. Madsen、H.B. Nielsen 和 O. Tingleff（2004）：约束优化，第 2 版。IMM，DTU。可从以下网址获取：\\
+ \url{http://www.imm.dtu.dk/courses/02611/ConOpt.pdf}
+ \item D. Marquardt（1963）：非线性参数最小二乘估计的一种算法。\emph{SIAM J. APPL. MATH.} \textbf{11}，第 431--441 页。
+ \needspace{3\baselineskip}
+ \item H.B. Nielsen（1997）：稀疏矩阵的直接方法。IMM，DTU。可从以下网址获取：\\
+ \url{http://www.imm.dtu.dk/~hbn/publ/Nsparse.ps}
+ \item H.B. Nielsen（1999）：Marquardt 法中的阻尼参数。IMM，DTU。报告 IMM-REP-1999-05。可从以下网址获取：\\
+ \url{http://www.imm.dtu.dk/~hbn/publ/TR9905.ps}
+ \item H.B. Nielsen（2000）：可分离非线性最小二乘。IMM，DTU。报告 IMM-REP-2000-01。可从以下网址获取：\\
+ \url{http://www.imm.dtu.dk/~hbn/publ/TR0001.ps}
+ \item J. Nocedal 和 S.J. Wright（1999）：数值优化。Springer。
+ \item M.J.D. Powell（1970）：非线性方程的一种混合方法。载 P. Rabinowitz 编：非线性代数方程的数值方法，Gordon and Breach，第 87 页及以后。
+ \item P.L. Toint（1987）：关于大规模非线性最小二乘计算。\emph{SIAM J.S.S.C.} \textbf{8}，第 416--435 页。
+\end{enumerate}
+
+\chapter*{索引}
+\addcontentsline{toc}{chapter}{索引}
+\markboth{索引}{索引}
+\sourcepage{57}
+\begingroup
+\small
+\newcommand{\idxpage}[1]{\pageref{src:#1}}
+\newcommand{\idxrange}[2]{\ifnum\getpagerefnumber{src:#1}=\getpagerefnumber{src:#2}\relax\idxpage{#1}\else\idxpage{#1}--\idxpage{#2}\fi}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+Al-Baali & \idxpage{35} & 增益比 & \idxpage{13}、\idxpage{25}、\idxpage{31}\\
+BFGS 策略 & \idxpage{35} & GAMS & \idxpage{47}\\
+Broyden & \idxpage{42}、\idxpage{45} & 高斯--牛顿法 & \idxpage{21}、\idxpage{29}\\
+Cholesky 分解 & \idxpage{9}、\idxrange{51}{52} & 广义割线法 & \idxpage{42}\\
+条件数 & \idxpage{51} & Gill 等 & \idxpage{45}\\
+相容性 & \idxpage{23} & 全局极小点 & \idxpage{2}、\idxpage{22}\\
+约束优化问题 & \idxpage{15} & 全局阶段 & \idxpage{5}、\idxpage{36}\\
+阻尼法 & \idxpage{12}、\idxpage{24} & 高尔夫 & \idxpage{31}\\
+阻尼牛顿法 & \idxpage{15} & Golub & \idxpage{19}、\idxpage{48}\\
+阻尼参数 & \idxpage{12}、\idxpage{24} & 梯度 & \idxpage{3}、\idxpage{18}、\idxpage{21}\\
+数据拟合 & \idxpage{1}、\idxpage{23}、\idxpage{27}、\idxpage{34}、\idxpage{45}、\idxpage{48} & 梯度法 & \idxpage{7}\\
+下降条件 & \idxpage{5} & 海森矩阵 & \idxpage{3}、\idxpage{8}、\idxpage{18}、\idxpage{21}、\idxpage{35}\\
+下降方向 & \idxpage{7}、\idxpage{8}、\idxpage{21}、\idxpage{24}、\idxpage{43} & 混合法 & \idxrange{8}{9}、\idxpage{15}、\idxpage{36}、\idxrange{39}{40}\\
+下降法 & \idxpage{6} & 不定 & \idxpage{4}\\
+差分近似 & \idxpage{41}、\idxpage{44}、\idxpage{47} & 无限循环 & \idxpage{26}\\
+狗腿法 & \idxrange{31}{32}、\idxpage{34}、\idxpage{45} & 初始阶段 & \idxpage{7}\\
+特征解 & \idxpage{51} & 互联网 & \idxpage{47}\\
+Eldén 等 & \idxpage{41} & 逆雅可比矩阵 & \idxpage{46}\\
+精确线搜索 & \idxpage{11} & 雅可比矩阵 & \idxpage{17}、\idxpage{20}、\idxpage{22}、\idxpage{40}、\idxpage{47}、\idxpage{48}\\
+最终收敛 & \idxpage{7} & L-M 算法 & \idxpage{47}\\
+最终阶段 & \idxpage{5}、\idxpage{8} & L-M 方程 & \idxpage{26}\\
+拟合模型 & \idxpage{1} & L-M 法 & \idxrange{27}{28}、\idxpage{36}、\idxpage{40}\\
+Fletcher & \idxpage{35} & 最小二乘拟合 & \idxpage{2}\\
+浮点运算次数 & \idxpage{46}、\idxpage{52} & 最小二乘问题 & \idxpage{1}、\idxpage{17}\\
+Frandsen 等 & \idxpage{3}、\idxpage{7}及后数页、\idxpage{11}、\idxpage{16}、\idxpage{20}、\idxpage{34}、\idxpage{35}、\idxpage{39} & Levenberg & \idxpage{24}\\
+满秩 & \idxpage{21} & 线搜索 & \idxpage{7}、\idxpage{10}及后数页\\
+ & & 线性收敛 & \idxpage{5}、\idxpage{7}、\idxpage{20}、\idxrange{22}{23}、\idxpage{29}、\idxpage{33}\\
+\end{longtable}
+
+\sourcepage{58}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.24\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}@{}}
+线性无关 & \idxpage{21}、\idxpage{43}、\idxpage{50} & 值域 & \idxpage{53}\\
+线性最小二乘 & \idxpage{18}、\idxpage{48}、\idxpage{52} & 秩 & \idxpage{53}\\
+线性模型 & \idxpage{20}、\idxpage{25}、\idxpage{29}、\idxpage{42} & 秩一更新 & \idxpage{42}、\idxpage{45}\\
+线性问题 & \idxpage{26} & 残差 & \idxpage{2}\\
+局部极小点 & \idxpage{2}及后数页、\idxpage{22} & Rosenbrock & \idxpage{39}、\idxpage{44}、\idxpage{47}\\
+LU 分解 & \idxpage{51} & 舍入误差 & \idxpage{26}、\idxpage{38}、\idxpage{46}\\
+Madsen & \idxpage{19}、\idxrange{34}{35}、\idxpage{39} & 鞍点 & \idxpage{4}\\
+Madsen 等 & \idxpage{15}、\idxpage{16} & 保护措施 & \idxpage{26}\\
+Marquardt & \idxpage{13}、\idxpage{24} & 缩放 & \idxpage{48}\\
+MATLAB & \idxpage{19}、\idxpage{23}、\idxpage{47} & 割线狗腿法 & \idxpage{47}\\
+Meyer 问题 & \idxpage{48} & 割线 L-M 法 & \idxpage{44}\\
+最小范数解 & \idxpage{54} & 割线法 & \idxrange{41}{42}\\
+模型 & \idxpage{11} & 半正定 & \idxpage{50}\\
+必要条件 & \idxpage{3} & 可分离最小二乘 & \idxpage{48}\\
+牛顿法 & \idxpage{8} & 奇异雅可比矩阵 & \idxpage{20}、\idxpage{29}\\
+牛顿--拉夫森法 & \idxpage{19}、\idxpage{24} & 奇异值分解 & \idxpage{52}\\
+Nielsen & \idxpage{14}、\idxpage{19}、\idxpage{45}、\idxpage{48} & 非精确线搜索 & \idxpage{11}\\
+Nocedal & \idxpage{15} & 张成 & \idxpage{43}\\
+非线性方程组 & \idxpage{19}、\idxpage{24}、\idxpage{28}、\idxrange{45}{46} & 稀疏矩阵 & \idxpage{45}\\
+正规方程 & \idxpage{18}、\idxpage{26}、\idxpage{33} & 驻点 & \idxpage{3}\\
+数值微分 & \idxpage{41} & 最速下降 & \idxpage{7}、\idxpage{25}、\idxpage{29}\\
+目标函数 & \idxpage{2}、\idxpage{2} & 停止准则 & \idxpage{26}、\idxpage{28}、\idxpage{29}、\idxpage{40}、\idxpage{47}\\
+正交矩阵 & \idxpage{18} & 子矩阵 & \idxpage{19}\\
+正交变换 & \idxpage{18}、\idxpage{27} & 子向量 & \idxpage{19}\\
+标准正交基 & \idxpage{51} & 充分条件 & \idxpage{4}、\idxpage{8}\\
+参数估计 & \idxpage{48} & 超线性收敛 & \idxpage{6}、\idxpage{22}、\idxpage{28}、\idxpage{34}\\
+Pereyra & \idxpage{48} & SVD & \idxpage{52}\\
+正定 & \idxpage{4}、\idxpage{8}、\idxpage{15}、\idxpage{21}、\idxpage{24}、\idxpage{35}、\idxpage{50} & 泰勒展开 & \idxpage{3}、\idxpage{6}、\idxpage{8}、\idxpage{12}、\idxpage{17}、\idxpage{20}\\
+Powell & \idxpage{20}、\idxpage{28}、\idxpage{30}、\idxpage{43} & Toint & \idxpage{45}\\
+Powell 问题 & \idxpage{33}、\idxpage{47} & 信赖域 & \idxpage{12}、\idxpage{29}\\
+二次收敛 & \idxpage{6}、\idxpage{9}、\idxrange{22}{23} & 更新 & \idxpage{13}、\idxpage{14}、\idxpage{28}、\idxpage{42}、\idxpage{45}\\
+拟牛顿法 & \idxpage{9}、\idxpage{34}、\idxpage{36}、\idxpage{40} & Van Loan & \idxpage{19}\\
+ & & 白噪声 & \idxpage{2}\\
+ & & Wright & \idxpage{15}\\
+\end{longtable}
+\endgroup

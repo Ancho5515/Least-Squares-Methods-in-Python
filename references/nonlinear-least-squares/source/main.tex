@@ -1,0 +1,92 @@
+% !TeX program = xelatex
+\PassOptionsToPackage{no-math}{fontspec}
+\documentclass[UTF8,11pt,openany,oneside,a4paper,fontset=none]{ctexbook}
+\usepackage[a4paper,top=25mm,bottom=25mm,left=26mm,right=26mm,headheight=15pt]{geometry}
+\usepackage{fontspec}
+\setCJKmainfont{FandolSong-Regular.otf}[BoldFont=FandolSong-Bold.otf,ItalicFont=FandolKai-Regular.otf,Script=Default]
+\setCJKsansfont{FandolHei-Regular.otf}[BoldFont=FandolHei-Bold.otf,Script=Default]
+\setCJKmonofont{FandolFang-Regular.otf}[Script=Default]
+\setmainfont{NimbusRoman-Regular.otf}[Path=fonts/,BoldFont=NimbusRoman-Bold.otf,ItalicFont=NimbusRoman-Italic.otf,BoldItalicFont=NimbusRoman-BoldItalic.otf]
+\setsansfont{NimbusSans-Regular.otf}[Path=fonts/,BoldFont=NimbusSans-Bold.otf,ItalicFont=NimbusSans-Italic.otf,BoldItalicFont=NimbusSans-BoldItalic.otf]
+\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{graphicx,array,booktabs,longtable,multirow}
+\usepackage{enumitem,caption,float,needspace}
+\usepackage[breakable]{tcolorbox}
+\usepackage{fancyhdr,microtype}
+\usepackage{hyperref,bookmark,zref-abspage,zref-user}
+\hypersetup{unicode=true,hidelinks,bookmarksnumbered=true,
+  pdftitle={非线性最小二乘问题的求解方法},
+  pdfauthor={K. Madsen; H. B. Nielsen; O. Tingleff},
+  pdfsubject={第二版（2004年4月）中文译本}}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.22em}
+\linespread{1.18}
+\setlength{\emergencystretch}{1.5em}
+\allowdisplaybreaks[2]
+\setlist{nosep,leftmargin=2em,topsep=0.4em}
+\captionsetup{font=small,labelfont=bf,labelsep=quad}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small 非线性最小二乘问题的求解方法}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+\ctexset{chapter={format=\Huge\bfseries,beforeskip=18pt,afterskip=30pt},section={format=\Large\bfseries}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\top}
+\providecommand{\norm}[1]{\lVert#1\rVert}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\sourcepage}[1]{\phantomsection\label{src:#1}\zlabel{srcabs:#1}}
+\tcbset{colback=white,colframe=black!50,boxrule=0.4pt,arc=0pt,left=6pt,right=6pt,top=5pt,bottom=5pt,before skip=9pt,after skip=9pt}
+\newenvironment{statement}[1]{\par\needspace{5\baselineskip}\begin{tcolorbox}[breakable]\noindent\textbf{#1}\par\nobreak\smallskip\noindent\ignorespaces}{\end{tcolorbox}}
+\newenvironment{example}[1]{\par\addvspace{0.8em}\needspace{4\baselineskip}\begin{list}{}{\setlength{\leftmargin}{1em}\setlength{\rightmargin}{0pt}}\item[]\textbf{例 #1}\quad\ignorespaces}{\unskip\nobreak\hfill\ensuremath{\blacksquare}\par\end{list}\addvspace{0.5em}}
+\newenvironment{algorithmbox}[2]{\par\needspace{7\baselineskip}\begin{tcolorbox}[breakable]\noindent\textbf{算法 #1\quad #2}\par\nobreak\smallskip\begingroup\small}{\par\endgroup\end{tcolorbox}}
+\begin{document}
+\frontmatter
+\pagenumbering{gobble}
+\hypersetup{pageanchor=false}
+\thispagestyle{empty}
+\pdfbookmark[0]{翻译说明}{translation-note}
+\begin{center}\vspace*{22mm}{\LARGE\bfseries 翻译说明}\end{center}
+\vspace{12mm}
+本译本依据 K. Madsen、H. B. Nielsen 与 O. Tingleff 合著的
+\textit{Methods for Non-Linear Least Squares Problems} 第二版（2004 年 4 月）英文 PDF 翻译。
+\par
+译文按原著的章节、段落及定义、定理、例题、算法顺序编排。数学公式采用可编辑的 LaTeX 源码，保留原著编号；图形保留原版矢量线条，图题及自然语言说明译为中文。专有名称、代码标识符和参考文献保留必要的英文。
+\par
+中文重新排版后页码与英文原版不同。正文及索引中的书内页码引用指向本译本相应内容；参考文献中的出版页码仍按原著列出。原著自身的图号缺口及疑似数学误植照录，并在单独的检查报告中说明。
+\par
+本页为翻译说明。后续封面、目录、正文、附录、参考文献和索引均对应原著内容。
+\clearpage
+\begin{titlepage}
+\pdfbookmark[0]{封面}{cover}
+\centering
+{\large IMM\par}
+\vspace*{35mm}
+{\Huge\bfseries 非线性最小二乘问题\\[8mm]的求解方法\par}
+\vspace{15mm}
+{\Large 第二版，2004 年 4 月\par}
+\vspace{24mm}
+{\large K. Madsen\quad H. B. Nielsen\quad O. Tingleff\par}
+\vfill
+{\large 信息学与数学建模系\\[3mm]丹麦技术大学\par}
+\vspace{20mm}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\pdfbookmark[0]{目录}{contents}
+\tableofcontents
+\mainmatter
+\chapter{引言与定义}
+\input{chapters/01-introduction.tex}
+\chapter{下降法}
+\input{chapters/02-descent-methods.tex}
+\chapter{非线性最小二乘问题}
+\input{chapters/03a-foundations.tex}
+\input{chapters/03b-lm-dogleg.tex}
+\input{chapters/03c-hybrid.tex}
+\input{chapters/03d-secant-final.tex}
+\input{chapters/appendix-and-references.tex}
+\end{document}

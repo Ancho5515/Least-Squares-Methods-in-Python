@@ -1,0 +1,281 @@
+\sourcepage{17}
+在本讲义余下的部分中，我们将讨论非线性最小二乘问题的求解方法。给定向量函数 $\mathbf{f}:\R^n\mapsto\R^m$，其中 $m\geq n$。我们希望使 $\norm{\mathbf{f}(\mathbf{x})}$ 最小，等价地，就是求
+\begin{equation}
+  \mathbf{x}^*=\operatorname*{arg\,min}_{\mathbf{x}}\{F(\mathbf{x})\},
+  \tag{3.1a}\label{eq:3.1a}
+\end{equation}
+其中
+\begin{equation}
+  F(\mathbf{x})=\frac12\sum_{i=1}^m\bigl(f_i(\mathbf{x})\bigr)^2
+  =\frac12\norm{\mathbf{f}(\mathbf{x})}^2
+  =\frac12\mathbf{f}(\mathbf{x})^{\T}\mathbf{f}(\mathbf{x}).
+  \tag{3.1b}\label{eq:3.1b}
+\end{equation}
+
+最小二乘问题可以用一般的优化方法求解，但我们将介绍效率更高的专门方法。在许多情况下，尽管这些方法不需要实现二阶导数，它们仍能获得优于线性收敛的速度，有时甚至能达到二次收敛。
+
+在描述本章的方法时，我们需要 $F$ 的导数公式。假设 $\mathbf{f}$ 具有连续的二阶偏导数，则其 Taylor 展开可写为
+\begin{equation}
+  \mathbf{f}(\mathbf{x}+\mathbf{h})=\mathbf{f}(\mathbf{x})+\mathbf{J}(\mathbf{x})\mathbf{h}
+  +O(\norm{\mathbf{h}}^2),
+  \tag{3.2a}\label{eq:3.2a}
+\end{equation}
+其中，$\mathbf{J}\in\R^{m\times n}$ 是 Jacobian 矩阵。这个矩阵包含各分量函数的一阶偏导数，
+\begin{equation}
+  \bigl(\mathbf{J}(\mathbf{x})\bigr)_{ij}
+  =\frac{\partial f_i}{\partial x_j}(\mathbf{x}).
+  \tag{3.2b}\label{eq:3.2b}
+\end{equation}
+对于 $F:\R^n\mapsto\R$，由式~\eqref{eq:3.1b} 的第一种写法可得\sourcepage{18}\footnote{如果在定义~\eqref{eq:3.1b} 中没有使用因子 $\tfrac12$，那么许多表达式中都会出现一个令人烦恼的因子 $2$。}
+\begin{equation}
+  \frac{\partial F}{\partial x_j}(\mathbf{x})
+  =\sum_{i=1}^m f_i(\mathbf{x})\frac{\partial f_i}{\partial x_j}(\mathbf{x}).
+  \tag{3.3}\label{eq:3.3}
+\end{equation}
+因此，式~\eqref{eq:1.4b} 中的梯度为
+\begin{equation}
+  \mathbf{F}'(\mathbf{x})=\mathbf{J}(\mathbf{x})^{\T}\mathbf{f}(\mathbf{x}).
+  \tag{3.4a}\label{eq:3.4a}
+\end{equation}
+我们还需要 $F$ 的 Hessian 矩阵。由式~\eqref{eq:3.3} 可见，其第 $(j,k)$ 个元素为
+\[
+  \frac{\partial^2 F}{\partial x_j\partial x_k}(\mathbf{x})
+  =\sum_{i=1}^m\left(
+    \frac{\partial f_i}{\partial x_j}(\mathbf{x})
+    \frac{\partial f_i}{\partial x_k}(\mathbf{x})
+    +f_i(\mathbf{x})\frac{\partial^2 f_i}{\partial x_j\partial x_k}(\mathbf{x})
+  \right),
+\]
+这表明
+\begin{equation}
+  \mathbf{F}''(\mathbf{x})=\mathbf{J}(\mathbf{x})^{\T}\mathbf{J}(\mathbf{x})
+  +\sum_{i=1}^m f_i(\mathbf{x})f_i''(\mathbf{x}).
+  \tag{3.4b}\label{eq:3.4b}
+\end{equation}
+
+\begin{example}{3.1}
+式~(3.1) 最简单的情形是 $\mathbf{f}(\mathbf{x})$ 具有如下形式：
+\[
+  \mathbf{f}(\mathbf{x})=\mathbf{b}-\mathbf{A}\mathbf{x},
+\]
+其中，向量 $\mathbf{b}\in\R^m$ 和矩阵 $\mathbf{A}\in\R^{m\times n}$ 均已给定。我们称之为\emph{线性最小二乘问题}。在这种情况下，对所有 $\mathbf{x}$ 都有 $\mathbf{J}(\mathbf{x})=-\mathbf{A}$，由式~\eqref{eq:3.4a} 可见
+\[
+  \mathbf{F}'(\mathbf{x})=-\mathbf{A}^{\T}(\mathbf{b}-\mathbf{A}\mathbf{x}).
+\]
+当 $\mathbf{x}^*$ 为所谓\emph{正规方程}的解时，这个梯度等于零；正规方程为
+\begin{equation}
+  (\mathbf{A}^{\T}\mathbf{A})\mathbf{x}^*=\mathbf{A}^{\T}\mathbf{b}.
+  \tag{3.5}\label{eq:3.5}
+\end{equation}
+该问题也可写成
+\[
+  \mathbf{A}\mathbf{x}^*\simeq\mathbf{b},
+\]
+另一种求解途径是\emph{正交变换}：寻找正交矩阵 $\mathbf{Q}$，使得
+\sourcepage{19}
+\[
+  \mathbf{Q}^{\T}\mathbf{A}=\begin{bmatrix}\mathbf{R}\\\mathbf{0}\end{bmatrix},
+\]
+其中，$\mathbf{R}\in\R^{n\times n}$ 为上三角矩阵。通过对下列方程组进行回代，即可求得解\footnote{形如 $u_{p:q}$ 的表达式表示由元素 $u_i$（$i=p,\ldots,q$）组成的子向量。矩阵 $\mathbf{A}$ 的第 $i$ 行和第 $j$ 列分别记为 $\mathbf{A}_{i,:}$ 和 $\mathbf{A}_{:,j}$。}：
+\[
+  \mathbf{R}\mathbf{x}^*=(\mathbf{Q}^{\T}\mathbf{b})_{1:n}.
+\]
+与通过正规方程求解相比，这种方法更加准确。
+
+在 MATLAB 中，假设数组 \texttt{A} 和 \texttt{b} 分别存放矩阵 $\mathbf{A}$ 和向量 $\mathbf{b}$，则命令 \verb|A\b| 返回通过正交变换算得的最小二乘解。
+
+正如本册的标题所示，我们假设 $\mathbf{f}$ 是非线性的，因此不再详细讨论线性问题。相关内容可参见 Madsen 和 Nielsen（2002）第~2~章，或 Golub 和 Van Loan（1996）第~5.2~节。
+\end{example}
+
+\begin{example}{3.2}
+在例~1.1 中，我们见到了由数据拟合产生的非线性最小二乘问题。另一个应用是求解非线性方程组，
+\[
+  \mathbf{f}(\mathbf{x}^*)=\mathbf{0},\qquad\text{其中 }\mathbf{f}:\R^n\mapsto\R^n.
+\]
+我们可以使用 Newton--Raphson 法：从初始猜测 $\mathbf{x}_0$ 出发，按以下算法计算 $\mathbf{x}_1,\mathbf{x}_2,\ldots$。该算法的依据是寻找使 $\mathbf{f}(\mathbf{x}+\mathbf{h})=\mathbf{0}$ 的 $\mathbf{h}$，并忽略式~\eqref{eq:3.2a} 中的 $O(\norm{\mathbf{h}}^2)$ 项，
+\begin{equation}
+  \begin{aligned}
+    &\text{求解 }\mathbf{J}(\mathbf{x}_k)\mathbf{h}_k=-\mathbf{f}(\mathbf{x}_k)\text{，得到 }\mathbf{h}_k,\\
+    &\mathbf{x}_{k+1}=\mathbf{x}_k+\mathbf{h}_k.
+  \end{aligned}
+  \tag{3.6}\label{eq:3.6}
+\end{equation}
+这里的 Jacobian 矩阵 $\mathbf{J}$ 由式~\eqref{eq:3.2b} 给出。如果 $\mathbf{J}(\mathbf{x}^*)$ 非奇异，那么该方法在最终阶段具有二次收敛性，即当 $d_k=\norm{\mathbf{x}_k-\mathbf{x}^*}$ 很小时，有 $\norm{\mathbf{x}_{k+1}-\mathbf{x}^*}=O(d_k^2)$。然而，如果 $\mathbf{x}_k$ 远离 $\mathbf{x}^*$，就可能走得更远。
+
+我们可以重新表述该问题，使本章即将介绍的所有“工具”都能派上用场：式~\eqref{eq:3.6} 的一个解，是式~(3.1) 所定义函数 $F$ 的一个全局极小点，
+\[
+  F(\mathbf{x})=\frac12\norm{\mathbf{f}(\mathbf{x})}^2,
+\]
+\sourcepage{20}
+因为 $F(\mathbf{x}^*)=0$，而当 $\mathbf{f}(\mathbf{x})\ne\mathbf{0}$ 时，$F(\mathbf{x})>0$。例如，可以把式~\eqref{eq:3.6} 中近似解的更新改为
+\[
+  \mathbf{x}_{k+1}=\mathbf{x}_k+\alpha_k\mathbf{h}_k,
+\]
+其中，$\alpha_k$ 通过对函数 $\varphi(\alpha)=F(\mathbf{x}_k+\alpha\mathbf{h}_k)$ 作线搜索求得。
+
+作为一个具体的例子，我们考虑取自 Powell（1970）的如下问题：
+\[
+  \mathbf{f}(\mathbf{x})=\begin{bmatrix}
+    x_1\\[2pt]
+    \dfrac{10x_1}{x_1+0.1}+2x_2^2
+  \end{bmatrix},
+\]
+它的唯一解为 $\mathbf{x}^*=\mathbf{0}$。其 Jacobian 矩阵为
+\[
+  \mathbf{J}(\mathbf{x})=\begin{bmatrix}
+    1&0\\
+    (x_1+0.1)^{-2}&4x_2
+  \end{bmatrix},
+\]
+在解处这个矩阵是奇异的。
+
+若取 $\mathbf{x}_0=[3,\,1]^{\T}$，并在上述算法中采用精确线搜索，则迭代点收敛至 $\mathbf{x}_c\simeq[1.8016,\,0]^{\T}$，它并不是解。另一方面，容易看出，算法~\eqref{eq:3.6} 给出的迭代点为 $\mathbf{x}_k=[0,\,y_k]^{\T}$，其中 $y_{k+1}=\tfrac12 y_k$，也就是说，迭代线性收敛于解。
+
+在后面的若干例子中，我们还将回到这个问题，考察不同方法如何处理它。
+\end{example}
+
+\section{Gauss--Newton法}
+这种方法是后面几节将要介绍的高效方法的基础。它以向量函数各分量的一阶导数的实现为基础。在特殊情况下，它能像一般优化中的 Newton 法一样达到二次收敛，参见 Frandsen 等（2004）。
+
+Gauss--Newton 法基于 $\mathbf{x}$ 邻域内 $\mathbf{f}$ 各分量的线性近似（即 $\mathbf{f}$ 的线性模型）：当 $\norm{\mathbf{h}}$ 很小时，由 Taylor 展开式~(3.2) 可见
+\begin{equation}
+  \mathbf{f}(\mathbf{x}+\mathbf{h})\simeq\ell(\mathbf{h})
+  \equiv\mathbf{f}(\mathbf{x})+\mathbf{J}(\mathbf{x})\mathbf{h}.
+  \tag{3.7a}\label{eq:3.7a}
+\end{equation}
+将其代入 $F$ 的定义式~(3.1)，可得
+\sourcepage{21}
+\begin{equation}
+  \begin{aligned}
+    F(\mathbf{x}+\mathbf{h})&\simeq L(\mathbf{h})
+      \equiv\frac12\ell(\mathbf{h})^{\T}\ell(\mathbf{h})\\
+    &=\frac12\mathbf{f}^{\T}\mathbf{f}+\mathbf{h}^{\T}\mathbf{J}^{\T}\mathbf{f}
+      +\frac12\mathbf{h}^{\T}\mathbf{J}^{\T}\mathbf{J}\mathbf{h}\\
+    &=F(\mathbf{x})+\mathbf{h}^{\T}\mathbf{J}^{\T}\mathbf{f}
+      +\frac12\mathbf{h}^{\T}\mathbf{J}^{\T}\mathbf{J}\mathbf{h}
+  \end{aligned}
+  \tag{3.7b}\label{eq:3.7b}
+\end{equation}
+（其中，$\mathbf{f}=\mathbf{f}(\mathbf{x})$，$\mathbf{J}=\mathbf{J}(\mathbf{x})$）。\emph{Gauss--Newton 步} $\mathbf{h}_{\mathrm{gn}}$ 使 $L(\mathbf{h})$ 最小，
+\[
+  \mathbf{h}_{\mathrm{gn}}=\operatorname*{arg\,min}_{\mathbf{h}}\{L(\mathbf{h})\}.
+\]
+容易看出，$L$ 的梯度和 Hessian 矩阵为
+\begin{equation}
+  \mathbf{L}'(\mathbf{h})=\mathbf{J}^{\T}\mathbf{f}+\mathbf{J}^{\T}\mathbf{J}\mathbf{h},
+  \qquad \mathbf{L}''(\mathbf{h})=\mathbf{J}^{\T}\mathbf{J}.
+  \tag{3.8}\label{eq:3.8}
+\end{equation}
+与式~\eqref{eq:3.4a} 比较可知，$\mathbf{L}'(\mathbf{0})=\mathbf{F}'(\mathbf{x})$。此外，矩阵 $\mathbf{L}''(\mathbf{h})$ 与 $\mathbf{h}$ 无关。它是对称矩阵；如果 $\mathbf{J}$ 满秩，即它的列向量线性无关，那么 $\mathbf{L}''(\mathbf{h})$ 还是正定矩阵，参见附录~A。这意味着 $L(\mathbf{h})$ 具有唯一的极小点，可通过求解以下方程得到：
+\begin{equation}
+  (\mathbf{J}^{\T}\mathbf{J})\mathbf{h}_{\mathrm{gn}}=-\mathbf{J}^{\T}\mathbf{f}.
+  \tag{3.9}\label{eq:3.9}
+\end{equation}
+这是 $F$ 的一个下降方向，因为
+\begin{equation}
+  \mathbf{h}_{\mathrm{gn}}^{\T}\mathbf{F}'(\mathbf{x})
+  =\mathbf{h}_{\mathrm{gn}}^{\T}(\mathbf{J}^{\T}\mathbf{f})
+  =-\mathbf{h}_{\mathrm{gn}}^{\T}(\mathbf{J}^{\T}\mathbf{J})\mathbf{h}_{\mathrm{gn}}<0.
+  \tag{3.10}\label{eq:3.10}
+\end{equation}
+因此，可以在算法~2.4 中用 $\mathbf{h}_{\mathrm{gn}}$ 作为 $\mathbf{h}_{\mathrm d}$。其典型迭代步为
+\begin{equation}
+  \begin{aligned}
+    &\text{求解 }(\mathbf{J}^{\T}\mathbf{J})\mathbf{h}_{\mathrm{gn}}=-\mathbf{J}^{\T}\mathbf{f},\\
+    &\mathbf{x}:=\mathbf{x}+\alpha\mathbf{h}_{\mathrm{gn}},
+  \end{aligned}
+  \tag{3.11}\label{eq:3.11}
+\end{equation}
+其中，$\alpha$ 由线搜索确定。经典的 Gauss--Newton 法在每一步都取 $\alpha=1$。可以证明，带线搜索的方法在满足以下条件时具有收敛保证：
+\begin{enumerate}[label=\alph*)]
+  \item $\{\mathbf{x}\mid F(\mathbf{x})\leq F(\mathbf{x}_0)\}$ 有界；
+  \item 每一步的 Jacobian 矩阵 $\mathbf{J}(\mathbf{x})$ 都满秩。
+\end{enumerate}
+
+在第~2~章中，我们看到用于优化的 Newton 法具有二次收敛性。Gauss--Newton 法通常并非如此。
+\sourcepage{22}
+为看清这一点，我们比较两种方法所用的搜索方向，
+\[
+  \mathbf{F}''(\mathbf{x})\mathbf{h}_{\mathrm n}=-\mathbf{F}'(\mathbf{x})
+  \qquad\text{和}\qquad
+  \mathbf{L}''(\mathbf{h})\mathbf{h}_{\mathrm{gn}}=-\mathbf{L}'(\mathbf{0}).
+\]
+我们在式~\eqref{eq:3.8} 后已经指出，两者的右端相同，但由式~\eqref{eq:3.4b} 和式~\eqref{eq:3.8} 可见，它们的系数矩阵有所不同：
+\begin{equation}
+  \mathbf{F}''(\mathbf{x})=\mathbf{L}''(\mathbf{h})+\sum_{i=1}^m f_i(\mathbf{x})f_i''(\mathbf{x}).
+  \tag{3.12}\label{eq:3.12}
+\end{equation}
+因此，如果 $\mathbf{f}(\mathbf{x}^*)=\mathbf{0}$，那么当 $\mathbf{x}$ 接近 $\mathbf{x}^*$ 时，就有 $\mathbf{L}''(\mathbf{h})\simeq \mathbf{F}''(\mathbf{x})$，从而 Gauss--Newton 法也能达到二次收敛。如果函数 $\{f_i\}$ 的曲率很小，或者 $\{|f_i(\mathbf{x}^*)|\}$ 很小，则可以期待超线性收敛；但一般情况下，只能期待线性收敛。值得注意的是，$F(\mathbf{x}^*)$ 的值控制着收敛速度。
+
+\begin{example}{3.3}
+考虑 $n=1$、$m=2$ 的简单问题，定义为
+\[
+  \mathbf{f}(x)=\begin{bmatrix}x+1\\\lambda x^2+x-1\end{bmatrix},
+  \qquad
+  F(x)=\frac12(x+1)^2+\frac12(\lambda x^2+x-1)^2.
+\]
+于是
+\[
+  F'(x)=2\lambda^2x^3+3\lambda x^2-2(\lambda-1)x,
+\]
+所以 $x=0$ 是 $F$ 的一个驻点。又有
+\[
+  F''(x)=6\lambda^2x^2+6\lambda x-2(\lambda-1).
+\]
+这说明，如果 $\lambda<1$，则 $F''(0)>0$，因此 $x=0$ 是一个局部极小点；实际上，它是全局极小点。
+
+Jacobian 矩阵为
+\[
+  \mathbf{J}(x)=\begin{bmatrix}1\\2\lambda x+1\end{bmatrix},
+\]
+从 $x_k$ 出发，经典 Gauss--Newton 法给出
+\[
+  x_{k+1}=x_k-
+  \frac{2\lambda^2x_k^3+3\lambda x_k^2-2(\lambda-1)x_k}
+       {2+4\lambda x_k+4\lambda^2x_k^2}.
+\]
+现在，如果 $\lambda\ne0$ 且 $x_k$ 接近零，则
+\[
+  x_{k+1}=x_k+(\lambda-1)x_k+O(x_k^2)
+  =\lambda x_k+O(x_k^2).
+\]
+\sourcepage{23}
+因此，当 $|\lambda|<1$ 时，迭代线性收敛。如果 $\lambda<-1$，则经典 Gauss--Newton 法无法找到这个极小点。例如，取 $\lambda=-2$、$x_0=0.1$，迭代点会表现出看似混沌的行为，
+\[
+  \begin{array}{r|r}
+    k&x_k\\\hline
+    0&0.1000\\
+    1&-0.3029\\
+    2&0.1368\\
+    3&-0.4680\\
+    \vdots&\vdots
+  \end{array}
+\]
+最后，如果 $\lambda=0$，则
+\[
+  x_{k+1}=x_k-x_k=0,
+\]
+即只需一步就找到了这个解。这是因为此时 $\mathbf{f}$ 是线性函数。
+\end{example}
+
+\begin{example}{3.4}
+对于例~1.1 中的数据拟合问题，Jacobian 矩阵的第 $i$ 行为
+\[
+  \mathbf{J}(\mathbf{x})_{i,:}
+  =\begin{bmatrix}
+    -x_3t_i e^{x_1t_i}&-x_4t_i e^{x_2t_i}&-e^{x_1t_i}&-e^{x_2t_i}
+  \end{bmatrix}.
+\]
+如果问题是\emph{相容的}（即 $\mathbf{f}(\mathbf{x}^*)=\mathbf{0}$），那么只要 $x_1^*$ 与 $x_2^*$ 有显著差别，带线搜索的 Gauss--Newton 法在最终阶段就具有二次收敛性。如果 $x_1^*=x_2^*$，则 $\operatorname{rank}(\mathbf{J}(\mathbf{x}^*))\leq2$，Gauss--Newton 法就会失效。
+
+如果一个或多个测量误差较大，那么 $\mathbf{f}(\mathbf{x}^*)$ 中会有一些较大的分量，这可能会减慢收敛速度。
+
+在 MATLAB 中，可以用一个十分紧凑的函数来计算 $\mathbf{f}$ 和 $\mathbf{J}$：假设 \texttt{x} 存放当前迭代点，$m\times2$ 数组 \texttt{ty} 存放数据点的坐标。下面的函数返回 \texttt{f} 和 \texttt{J}，其中分别存放 $\mathbf{f}(\mathbf{x})$ 和 $\mathbf{J}(\mathbf{x})$。
+\begin{verbatim}
+function  [f, J] = fitexp(x, ty)
+  t = ty(:,1); y = ty(:,2);
+  E = exp(t * [x(1), x(2)]);
+  f = y - E*[x(3); x(4)];
+  J = -[x(3)*t.*E(:,1), x(4)*t.*E(:,2), E];
+\end{verbatim}
+\end{example}
