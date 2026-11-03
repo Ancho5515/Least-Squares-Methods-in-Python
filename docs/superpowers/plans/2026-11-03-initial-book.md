@@ -4,9 +4,9 @@
 
 **Goal:** Deliver all 16 chapters and four appendices as executable Chinese notebooks and one locally compiled review PDF, with original reference sources in Git.
 
-**Architecture:** Per-chapter notebooks are authoritative; lsq/ holds tested numerical helpers. A local builder executes isolated kernels, exports their actual code/results/images through Pandoc and XeLaTeX, and writes a validation record.
+**Architecture:** Per-chapter notebooks are authoritative; lsq/ holds tested numerical helpers. A local builder executes isolated IPython processes, exports their actual code/results/images through Pandoc and XeLaTeX, and writes a validation record.
 
-**Tech Stack:** Python 3.11+ (validated on 3.12), NumPy, SciPy, Matplotlib, nbformat, nbclient, ipykernel, Pandoc, XeLaTeX.
+**Tech Stack:** Python 3.11+ (validated on 3.12), NumPy, SciPy, Matplotlib, nbformat, IPython, matplotlib-inline, ipykernel, Pandoc, XeLaTeX.
 
 **Spec:** docs/design.md
 
@@ -15,7 +15,7 @@
 - No GitHub Actions or Artifact; all review deliverables and data committed to ordinary Git.
 - Every phase and bug fix has its own commit.
 - Source/derived quantities and physical assumptions are explicit. Examples use reproducible synthetic data.
-- Source notebooks run independently from a fresh kernel. PDF includes real code outputs.
+- Source notebooks run independently; this host verifies separate socket-free IPython processes. Standard Jupyter kernel-protocol execution is not claimed here. PDF includes real code outputs.
 - Original reference sources are preserved, including their licenses and audit records.
 
 ## Review Focus
@@ -49,7 +49,7 @@ Interfaces: finite_difference(fun,x), whiten(A,y,cov), gauss_newton(fun,jac,x0),
 Files: notebooks/00*.ipynb through 06*.ipynb, data/, docs/outline.md.
 
 - [x] Write complete narrative, derivations, experiments and worked exercises for each chapter.
-- [x] Execute each notebook in a separate kernel and check its numeric assertions.
+- [x] Execute each notebook in a separate IPython process and check its numeric assertions.
 - [x] Commit executed chapters and source data.
 
 ## Task 4: Nonlinear methods 07–12
@@ -76,4 +76,8 @@ Files: tools/build.py, tools/book-template.tex, tests/test_build.py, requirement
 - [x] Build from executed notebooks using Pandoc + XeLaTeX locally; verify text, bookmarks, links and every page rendering.
 - [x] Independently review numerical and build behavior, fix meaningful defects with regression tests and separate commits.
 - [x] Execute full suite and all notebooks; rebuild PDF; write honest validation/limits and commit.
-- [ ] Push full staged history to the repository and verify remote head and file identities.
+- [x] Push full staged history to the repository and verify remote head and file identities.
+
+## Completion record
+
+2026-11-03: 20 notebooks / 54 code cells executed; 36 tests passed without skips; 63-page Chinese PDF and 23 vector figures rendered and checked; 45 reference checksums verified. Command-line Git lacked write credentials, so the connected GitHub interface published all 14 phase commits, verifying each stage's exact tree SHA against the local build. The initial empty repository was initialized without replacing existing history. See docs/REVIEW.md for execution and review limits.
