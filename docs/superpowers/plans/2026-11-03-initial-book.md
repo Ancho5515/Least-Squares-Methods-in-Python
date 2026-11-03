@@ -6,7 +6,7 @@
 
 **Architecture:** Per-chapter notebooks are authoritative; lsq/ holds tested numerical helpers. A local builder executes isolated kernels, exports their actual code/results/images through Pandoc and XeLaTeX, and writes a validation record.
 
-**Tech Stack:** Python 3.10+, NumPy, SciPy, Matplotlib, nbformat, nbclient, ipykernel, Pandoc, XeLaTeX.
+**Tech Stack:** Python 3.11+ (validated on 3.12), NumPy, SciPy, Matplotlib, nbformat, nbclient, ipykernel, Pandoc, XeLaTeX.
 
 **Spec:** docs/design.md
 
