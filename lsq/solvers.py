@@ -23,6 +23,15 @@ def _vector(value, name):
     return value
 
 
+def _symmetric(a):
+    scale = np.max(np.abs(a))
+    return bool(scale > 0 and np.max(np.abs(a/scale-a.T/scale)) <= 1e-10)
+
+
+def _small_step(h, x, xtol):
+    return bool(np.max(np.abs(h)/np.maximum(1., np.abs(x))) <= xtol)
+
+
 def finite_difference(fun, x, relative_step=None):
     """Central differences with per-coordinate steps; smooth real functions only."""
     x = _vector(x, 'x')
@@ -49,13 +58,32 @@ def whiten(a, y, covariance):
         raise ValueError('incompatible design/data/covariance shapes')
     if not np.all(np.isfinite(a)) or not np.all(np.isfinite(c)):
         raise ValueError('all inputs must be finite')
-    if not np.allclose(c, c.T, rtol=1e-10, atol=1e-12):
+    if not _symmetric(c):
         raise ValueError('covariance must be symmetric')
     try:
         l = np.linalg.cholesky(c)
     except np.linalg.LinAlgError as exc:
         raise ValueError('covariance must be positive definite') from exc
     return np.linalg.solve(l, a), np.linalg.solve(l, y)
+
+
+def linearized_covariance(jacobian, active_mask=None):
+    """Known absolute noise, already whitened J; no active bounds or null directions."""
+    j = np.asarray(jacobian, float)
+    if j.ndim != 2 or not all(j.shape) or not np.all(np.isfinite(j)):
+        raise ValueError('Jacobian must be a finite nonempty matrix')
+    m, n = j.shape
+    if active_mask is not None:
+        active_mask = np.asarray(active_mask)
+        if active_mask.shape != (n,) or np.any(active_mask != 0):
+            raise ValueError('unconstrained covariance unavailable at active bounds')
+    if m < n:
+        raise ValueError('parameter covariance unavailable: fewer observations than parameters')
+    _, s, vt = np.linalg.svd(j, full_matrices=False)
+    threshold = np.finfo(float).eps*max(m, n)*s[0]
+    if s[0] == 0 or s[-1] <= threshold:
+        raise ValueError('parameter covariance unavailable: Jacobian is numerically rank deficient')
+    return (vt.T/(s*s))@vt
 
 
 def _evaluate(fun, jac, x):
@@ -90,7 +118,12 @@ def _start(fun, jac, x0, max_iter, gtol, xtol):
 
 
 def _finish(x, cost, status, history):
-    return Result(x.copy(), cost, status in ('gradient', 'step'), status, history)
+    return Result(x.copy(), cost, status == 'gradient', status, history)
+
+
+def _budget_finish(x, r, j, cost, gtol, history):
+    status = 'gradient' if np.linalg.norm(j.T@r, np.inf) <= gtol else 'max_iter'
+    return _finish(x, cost, status, history)
 
 
 def gauss_newton(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10):
@@ -101,8 +134,8 @@ def gauss_newton(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10):
         if np.linalg.norm(g, np.inf) <= gtol:
             return _finish(x, cost, 'gradient', history)
         h = np.linalg.lstsq(j, -r, rcond=None)[0]
-        if np.linalg.norm(h) <= xtol*(xtol+np.linalg.norm(x)):
-            return _finish(x, cost, 'step', history)
+        if _small_step(h, x, xtol):
+            return _finish(x, cost, 'stalled', history)
         alpha = 1.
         while alpha >= 2.**-30:
             trial_cost = _trial(fun, x+alpha*h, len(r))
@@ -115,7 +148,7 @@ def gauss_newton(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10):
         r, j, cost = _evaluate(fun, jac, x)
         history.append(dict(iteration=k+1, x=x.copy(), cost=cost, accepted=True,
                             step_norm=float(np.linalg.norm(alpha*h)), control=alpha))
-    return _finish(x, cost, 'max_iter', history)
+    return _budget_finish(x, r, j, cost, gtol, history)
 
 
 def levenberg_marquardt(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10,
@@ -137,7 +170,7 @@ def levenberg_marquardt(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10,
         a = np.vstack((j, np.sqrt(mu)*np.eye(len(x))))
         b = np.r_[-r, np.zeros(len(x))]
         h = np.linalg.lstsq(a, b, rcond=None)[0]
-        if np.linalg.norm(h) <= xtol*(xtol+np.linalg.norm(x)):
+        if _small_step(h, x, xtol):
             # Damping can itself cause tiny steps: do not claim convergence.
             return _finish(x, cost, 'stalled', history)
         prediction = -float(g@h) - .5*float((j@h)@(j@h))
@@ -158,7 +191,7 @@ def levenberg_marquardt(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10,
             nu *= 2.
             if not np.isfinite(mu) or not np.isfinite(nu):
                 return _finish(x, cost, 'stalled', history)
-    return _finish(x, cost, 'max_iter', history)
+    return _budget_finish(x, r, j, cost, gtol, history)
 
 
 def dogleg(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10,
@@ -185,7 +218,7 @@ def dogleg(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10,
                 av, bv, cv = v@v, 2*(hs@v), hs@hs-radius**2
                 t = (-bv+np.sqrt(max(0., bv*bv-4*av*cv)))/(2*av)
                 h = hs+t*v
-        if np.linalg.norm(h) <= xtol*(xtol+np.linalg.norm(x)):
+        if _small_step(h, x, xtol):
             return _finish(x, cost, 'stalled', history)
         prediction = -float(g@h)-.5*float((j@h)@(j@h))
         trial_cost = _trial(fun, x+h, len(r))
@@ -201,7 +234,7 @@ def dogleg(fun, jac, x0, max_iter=150, gtol=1e-9, xtol=1e-10,
             r, j, cost = _evaluate(fun, jac, x)
         history.append(dict(iteration=k+1, x=x.copy(), cost=cost, accepted=accepted,
                             step_norm=float(np.linalg.norm(h)), control=old_radius))
-    return _finish(x, cost, 'max_iter', history)
+    return _budget_finish(x, r, j, cost, gtol, history)
 
 
 def recursive_update(beta, p, phi, y, forgetting=1.):
@@ -210,7 +243,7 @@ def recursive_update(beta, p, phi, y, forgetting=1.):
     p = np.asarray(p, float)
     if phi.shape != beta.shape or p.shape != (len(beta), len(beta)):
         raise ValueError('incompatible RLS dimensions')
-    if (not np.all(np.isfinite(p)) or not np.allclose(p, p.T) or
+    if (not np.all(np.isfinite(p)) or not _symmetric(p) or
             not np.isfinite(y) or not np.isfinite(forgetting) or not 0 < forgetting <= 1):
         raise ValueError('invalid RLS inputs or forgetting factor')
     try:
@@ -220,5 +253,7 @@ def recursive_update(beta, p, phi, y, forgetting=1.):
     v = p@phi
     gain = v/(forgetting+phi@v)
     beta_new = beta+gain*(y-phi@beta)
-    p_new = (p-np.outer(gain, v))/forgetting
+    # Joseph form avoids catastrophic cancellation for diffuse initial P.
+    contraction = np.eye(len(beta))-np.outer(gain, phi)
+    p_new = contraction@(p/forgetting)@contraction.T+np.outer(gain, gain)
     return beta_new, .5*(p_new+p_new.T)
