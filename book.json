@@ -1,0 +1,26 @@
+{
+  "title": "最小二乘方法：Python交互学习",
+  "subtitle": "Least-Squares-Methods-in-Python · 中文初版 v0.1",
+  "chapters": [
+    "notebooks/00-guide.ipynb",
+    "notebooks/01-mean-and-line.ipynb",
+    "notebooks/02-models-and-residuals.ipynb",
+    "notebooks/03-linear-geometry.ipynb",
+    "notebooks/04-stable-linear-solves.ipynb",
+    "notebooks/05-noise-and-weights.ipynb",
+    "notebooks/06-regularization.ipynb",
+    "notebooks/07-nonlinear-foundations.ipynb",
+    "notebooks/08-descent-and-newton.ipynb",
+    "notebooks/09-gauss-newton.ipynb",
+    "notebooks/10-levenberg-marquardt.ipynb",
+    "notebooks/11-trust-region-dogleg.ipynb",
+    "notebooks/12-real-data.ipynb",
+    "notebooks/13-recursive.ipynb",
+    "notebooks/14-calibration-case.ipynb",
+    "notebooks/15-pwm-xyz.ipynb",
+    "notebooks/A-math.ipynb",
+    "notebooks/B-algorithm-guide.ipynb",
+    "notebooks/C-advanced.ipynb",
+    "notebooks/D-sources-and-errata.ipynb"
+  ]
+}
