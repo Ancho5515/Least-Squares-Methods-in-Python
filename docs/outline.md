@@ -2,6 +2,10 @@
 
 正文以Notebook为唯一来源，PDF章节顺序由book.json固定。
 
+第一次阅读先看[阅读指南](reading-guide.md)。数学基础较少时，先完成00—02章的直觉和实验，再读05—06章的加权与过拟合；03—04章用于补矩阵和可靠计算。07—11章深入算法走法，12—15章连成测量任务。公式可以第二遍再推，术语随时查[白话词典](plain-language-glossary.md)。
+
+当前 Notebook 和 PDF 已同步本轮通俗表达改写。章节内的合成数据实验不能直接当作真实设备性能结论。
+
 | 文件 | 章节 |
 |---|---|
 | [00-guide](../notebooks/00-guide.ipynb) | 阅读与运行指南 |
@@ -16,7 +20,7 @@
 | [09-gauss-newton](../notebooks/09-gauss-newton.ipynb) | Gauss–Newton 方法 |
 | [10-levenberg-marquardt](../notebooks/10-levenberg-marquardt.ipynb) | Levenberg–Marquardt 方法 |
 | [11-trust-region-dogleg](../notebooks/11-trust-region-dogleg.ipynb) | 信赖域与狗腿法 |
-| [12-real-data](../notebooks/12-real-data.ipynb) | 让算法适应真实数据 |
+| [12-real-data](../notebooks/12-real-data.ipynb) | 读数不完美时：单位、边界和异常点 |
 | [13-recursive](../notebooks/13-recursive.ipynb) | 递推最小二乘 |
 | [14-calibration-case](../notebooks/14-calibration-case.ipynb) | 综合案例：曲线拟合与标定 |
 | [15-pwm-xyz](../notebooks/15-pwm-xyz.ipynb) | 综合案例：PWM→XYZ 校正 |

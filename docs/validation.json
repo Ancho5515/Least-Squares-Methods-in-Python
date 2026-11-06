@@ -3,7 +3,7 @@
   "notebooks": [
     {
       "file": "notebooks/00-guide.ipynb",
-      "sha256": "5aafbe70cacd5117a7cabd083ddee5541c6cea9a2a81c6e973dda675d1874e47",
+      "sha256": "62302bf2a8dedea4e7bf98a20c3e5fdafc243a4101f519078b90e146ea811a04",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -11,7 +11,7 @@
     },
     {
       "file": "notebooks/01-mean-and-line.ipynb",
-      "sha256": "06788a967d3bd8725deaa68c31a8c988452277d774d8692d461043ed93576cc7",
+      "sha256": "9b54a749166182e8bab88d2e6af059648ae8ca71ef7e17f6bd0882c028cde02b",
       "code_cells": 3,
       "figures": 2,
       "vector_figures": 2,
@@ -19,7 +19,7 @@
     },
     {
       "file": "notebooks/02-models-and-residuals.ipynb",
-      "sha256": "014ea951a9895fcdd8b0bb9060a9a3cd2d78485139a41ad657e7f68b1473a16e",
+      "sha256": "08ea22948b797119e2804caf155f7f3d60671fce449dcd9d93dc2a4a8ea976da",
       "code_cells": 2,
       "figures": 1,
       "vector_figures": 1,
@@ -27,7 +27,7 @@
     },
     {
       "file": "notebooks/03-linear-geometry.ipynb",
-      "sha256": "f1bdc23bb1e21de996257b4570c8e861a6be93c31196b9c1aea254c4239aa5d8",
+      "sha256": "2c8d6a9b253e89f6e70d97c18b00e2d527ec035880fa785df3d73bf682f6b2e4",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -35,7 +35,7 @@
     },
     {
       "file": "notebooks/04-stable-linear-solves.ipynb",
-      "sha256": "26318d789ebdcb5b8ab44049e37c6acfc13d079a90382bcf45c36eab8d9f7832",
+      "sha256": "21ebdccb94c90faa9722edb0a0704b6e247b94387d8c4430f94f56c18c83b44a",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -43,7 +43,7 @@
     },
     {
       "file": "notebooks/05-noise-and-weights.ipynb",
-      "sha256": "fccb02d531ec6a93e84c667e2164cf7999cd1c3044c9669eb84a62ed4a9348a0",
+      "sha256": "82b4f40fe6bbd1258bb1dc7e26f26006c2cc5397882a624eacb1e371dddf11ea",
       "code_cells": 3,
       "figures": 2,
       "vector_figures": 2,
@@ -51,7 +51,7 @@
     },
     {
       "file": "notebooks/06-regularization.ipynb",
-      "sha256": "2ac60aa6229bf487d0957d6541829406311e93653c8756a8972416e57763e120",
+      "sha256": "6e54edf301628c7cbdad49dc642c9f71646634b2f5640977b1f9bcba70cfcd29",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -59,7 +59,7 @@
     },
     {
       "file": "notebooks/07-nonlinear-foundations.ipynb",
-      "sha256": "f31f48eec06b0af497b573893b259b0c6b4ecf533dfdb7f3b94e3fdbefa856eb",
+      "sha256": "448e20e8d7c2f168a9eb19e8ad5a20fb8172abbe1796b6a01591502f3b296e42",
       "code_cells": 2,
       "figures": 1,
       "vector_figures": 1,
@@ -67,7 +67,7 @@
     },
     {
       "file": "notebooks/08-descent-and-newton.ipynb",
-      "sha256": "f3aa17bb0728b29219518591aaa0281a8d26914e0efb04b31494d0a09092ced6",
+      "sha256": "4461a50d895d08557cd29c80c1f5d467b5bf1742f926e981494cdd1008cd6f70",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -75,7 +75,7 @@
     },
     {
       "file": "notebooks/09-gauss-newton.ipynb",
-      "sha256": "5b76fc8e76bfd31dc96fdea495b21dcd069bb75e83ca62386e4fb52da5035c77",
+      "sha256": "f729be83e35d15f3b79f87e028618c2f698ef089c56a95e170b877c36c5c72da",
       "code_cells": 3,
       "figures": 2,
       "vector_figures": 2,
@@ -83,7 +83,7 @@
     },
     {
       "file": "notebooks/10-levenberg-marquardt.ipynb",
-      "sha256": "f649012a869f2a7e4f3b3e8d75c4956297b6e6d7033d641bf71fb53080b6022b",
+      "sha256": "47588893c7af39dd6206ebd04b840997d8870d12bc03341fac640a3e113dd2b0",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -91,7 +91,7 @@
     },
     {
       "file": "notebooks/11-trust-region-dogleg.ipynb",
-      "sha256": "b981cdd910c6d20eba153b1d86c0c55bd9d935b62788b6906e0874c8b3104ad7",
+      "sha256": "2cf2ac61350860bcede6e7da0daffdbe9a83a9a0a92280e15e22b91a4895d4be",
       "code_cells": 3,
       "figures": 2,
       "vector_figures": 2,
@@ -99,7 +99,7 @@
     },
     {
       "file": "notebooks/12-real-data.ipynb",
-      "sha256": "c6793a877e53307b097adf7a6ca4c22488693f3f0fa9e0eaaf3cc15c01496f1e",
+      "sha256": "2985c1c6a3e8346a78e5c0e51e04d1c1591549aeb1588206527da27c05cd9ad8",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -107,7 +107,7 @@
     },
     {
       "file": "notebooks/13-recursive.ipynb",
-      "sha256": "7660fb31510e402548d55713990f6d66e34a0343d5f6caeea045790578d1c90d",
+      "sha256": "7db09b7f9e139d31949770a4cf466a71cddb016e0cbe97f389a435210bf76796",
       "code_cells": 3,
       "figures": 2,
       "vector_figures": 2,
@@ -115,7 +115,7 @@
     },
     {
       "file": "notebooks/14-calibration-case.ipynb",
-      "sha256": "2c28edb6d9f02922001b577ba1b9753491f03ce7bc47264debc7a43fb52bb391",
+      "sha256": "e9a67603d68ca26ba6dbc5da2af314da65fc27a32dd85c77004ef68989887014",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -123,7 +123,7 @@
     },
     {
       "file": "notebooks/15-pwm-xyz.ipynb",
-      "sha256": "e3b0115446608ecf47b824c06e228a1667087ba182e5b5569e56fb1026f04793",
+      "sha256": "c4f0c5604f1b391adcabdd7465ce2196a531746627ad4c45d3269fe51b0e496d",
       "code_cells": 3,
       "figures": 2,
       "vector_figures": 2,
@@ -131,7 +131,7 @@
     },
     {
       "file": "notebooks/A-math.ipynb",
-      "sha256": "2170e2883a25430ec4d80003e474bdc8e102c7e896bbfd335560e44e9301415d",
+      "sha256": "dd55dfb22c3219ebe360830fd46fa41ff1dac981e3a98d144e40054aaa0fd0f4",
       "code_cells": 2,
       "figures": 0,
       "vector_figures": 0,
@@ -139,7 +139,7 @@
     },
     {
       "file": "notebooks/B-algorithm-guide.ipynb",
-      "sha256": "8f16ddd82facfd2eecdd301d14368d78706e3d35ac0cd9e4c0e8babc00db389c",
+      "sha256": "134415cba6fe89d37c4159e0140b0c7a13ab8cd2e295288b3a02a3cbfab38aee",
       "code_cells": 2,
       "figures": 0,
       "vector_figures": 0,
@@ -147,7 +147,7 @@
     },
     {
       "file": "notebooks/C-advanced.ipynb",
-      "sha256": "844fad38555939dbae5d1d3fa4a8013b7f9c7a50a52dd6b4feee061c8a2532dd",
+      "sha256": "b680aa66e70ebb4cce2607b6a553fb5cf7f51a4392cf9e8655d65b358f63edb0",
       "code_cells": 3,
       "figures": 1,
       "vector_figures": 1,
@@ -155,7 +155,7 @@
     },
     {
       "file": "notebooks/D-sources-and-errata.ipynb",
-      "sha256": "b183e95e2d99547b770fa3c5d699a3d074d280ff2c5b1a0c035095a0d37c3d91",
+      "sha256": "be1bcec4e8e638c98932e0cdaf184738d1534053d6ff2e0844632def6580d784",
       "code_cells": 1,
       "figures": 0,
       "vector_figures": 0,
@@ -166,8 +166,8 @@
   "test_suite_ran_in_this_build": true,
   "pdf": {
     "file": "pdf/Least-Squares-Methods-in-Python-zh.pdf",
-    "pages": 63,
-    "sha256": "6701e174d7ef2bda609a8b5f0ccec6700a92c078343d5915b852cb131067bde8"
+    "pages": 78,
+    "sha256": "e3fb293daed3b1f3cb1079b30ed4daec210b39123113f0d242bb220d1cd649db"
   },
   "versions": {
     "numpy": "2.3.5",

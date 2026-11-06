@@ -1,0 +1,202 @@
+{
+  "date": "2026-11-06",
+  "scope": "Notebook prose and learner documentation; solver and code-cell sources unchanged",
+  "reference_repository": {
+    "url": "https://github.com/rlabbe/Kalman-and-Bayesian-Filters-in-Python",
+    "commit": "04b2bea802321086effbd99402fc13c893d11110",
+    "validation": "selected prose inspected; reference code not executed"
+  },
+  "command": "python tools/build.py --execute --test",
+  "notebooks_executed": 20,
+  "code_cells_executed": 54,
+  "figures_generated": 23,
+  "reference_files_verified": 45,
+  "tests": {
+    "discovered": 36,
+    "passed": 36,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pdf_smoke_test": "real Pandoc/XeLaTeX compilation and image aspect ratio check passed"
+  },
+  "checks": {
+    "all_notebook_execution_fingerprints_valid": true,
+    "all_code_cell_sources_and_metadata_match_pre_edit_baseline": true,
+    "local_markdown_link_targets_exist": true,
+    "pdf_and_notebooks_synchronized": true,
+    "saved_environment_install_script_executed_successfully": true
+  },
+  "environment_smoke_checks": {
+    "python": "3.12.14",
+    "jupyterlab": "authenticated local contents API returned 00-guide.ipynb; service then stopped",
+    "kernel": "real python3 kernel executed numerical finite-difference check; kernel then stopped",
+    "pip_check": "No broken requirements found"
+  },
+  "pdf": {
+    "rebuilt": true,
+    "file": "pdf/Least-Squares-Methods-in-Python-zh.pdf",
+    "pages": 78,
+    "sha256": "e3fb293daed3b1f3cb1079b30ed4daec210b39123113f0d242bb220d1cd649db",
+    "validation_record": "docs/pdf-validation.json",
+    "command": "python tools/build.py --pdf --test",
+    "separate_full_test_command": "bash /workspace/least-squares-state/install-environment.sh"
+  },
+  "limitations": [
+    "No beginner reader study performed.",
+    "No real hardware measurements validated.",
+    "No new interactive visualizations or code experiments added.",
+    "External link availability and full PDF layout not validated."
+  ],
+  "notebooks": [
+    {
+      "file": "notebooks/00-guide.ipynb",
+      "sha256": "62302bf2a8dedea4e7bf98a20c3e5fdafc243a4101f519078b90e146ea811a04",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 2719
+    },
+    {
+      "file": "notebooks/01-mean-and-line.ipynb",
+      "sha256": "9b54a749166182e8bab88d2e6af059648ae8ca71ef7e17f6bd0882c028cde02b",
+      "code_cells": 3,
+      "figures": 2,
+      "markdown_chars": 2412
+    },
+    {
+      "file": "notebooks/02-models-and-residuals.ipynb",
+      "sha256": "08ea22948b797119e2804caf155f7f3d60671fce449dcd9d93dc2a4a8ea976da",
+      "code_cells": 2,
+      "figures": 1,
+      "markdown_chars": 2137
+    },
+    {
+      "file": "notebooks/03-linear-geometry.ipynb",
+      "sha256": "2c8d6a9b253e89f6e70d97c18b00e2d527ec035880fa785df3d73bf682f6b2e4",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 2161
+    },
+    {
+      "file": "notebooks/04-stable-linear-solves.ipynb",
+      "sha256": "21ebdccb94c90faa9722edb0a0704b6e247b94387d8c4430f94f56c18c83b44a",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 1912
+    },
+    {
+      "file": "notebooks/05-noise-and-weights.ipynb",
+      "sha256": "82b4f40fe6bbd1258bb1dc7e26f26006c2cc5397882a624eacb1e371dddf11ea",
+      "code_cells": 3,
+      "figures": 2,
+      "markdown_chars": 2152
+    },
+    {
+      "file": "notebooks/06-regularization.ipynb",
+      "sha256": "6e54edf301628c7cbdad49dc642c9f71646634b2f5640977b1f9bcba70cfcd29",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 1850
+    },
+    {
+      "file": "notebooks/07-nonlinear-foundations.ipynb",
+      "sha256": "448e20e8d7c2f168a9eb19e8ad5a20fb8172abbe1796b6a01591502f3b296e42",
+      "code_cells": 2,
+      "figures": 1,
+      "markdown_chars": 1998
+    },
+    {
+      "file": "notebooks/08-descent-and-newton.ipynb",
+      "sha256": "4461a50d895d08557cd29c80c1f5d467b5bf1742f926e981494cdd1008cd6f70",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 1621
+    },
+    {
+      "file": "notebooks/09-gauss-newton.ipynb",
+      "sha256": "f729be83e35d15f3b79f87e028618c2f698ef089c56a95e170b877c36c5c72da",
+      "code_cells": 3,
+      "figures": 2,
+      "markdown_chars": 1601
+    },
+    {
+      "file": "notebooks/10-levenberg-marquardt.ipynb",
+      "sha256": "47588893c7af39dd6206ebd04b840997d8870d12bc03341fac640a3e113dd2b0",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 1691
+    },
+    {
+      "file": "notebooks/11-trust-region-dogleg.ipynb",
+      "sha256": "2cf2ac61350860bcede6e7da0daffdbe9a83a9a0a92280e15e22b91a4895d4be",
+      "code_cells": 3,
+      "figures": 2,
+      "markdown_chars": 1651
+    },
+    {
+      "file": "notebooks/12-real-data.ipynb",
+      "sha256": "2985c1c6a3e8346a78e5c0e51e04d1c1591549aeb1588206527da27c05cd9ad8",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 1714
+    },
+    {
+      "file": "notebooks/13-recursive.ipynb",
+      "sha256": "7db09b7f9e139d31949770a4cf466a71cddb016e0cbe97f389a435210bf76796",
+      "code_cells": 3,
+      "figures": 2,
+      "markdown_chars": 1985
+    },
+    {
+      "file": "notebooks/14-calibration-case.ipynb",
+      "sha256": "e9a67603d68ca26ba6dbc5da2af314da65fc27a32dd85c77004ef68989887014",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 1924
+    },
+    {
+      "file": "notebooks/15-pwm-xyz.ipynb",
+      "sha256": "c4f0c5604f1b391adcabdd7465ce2196a531746627ad4c45d3269fe51b0e496d",
+      "code_cells": 3,
+      "figures": 2,
+      "markdown_chars": 2237
+    },
+    {
+      "file": "notebooks/A-math.ipynb",
+      "sha256": "dd55dfb22c3219ebe360830fd46fa41ff1dac981e3a98d144e40054aaa0fd0f4",
+      "code_cells": 2,
+      "figures": 0,
+      "markdown_chars": 2027
+    },
+    {
+      "file": "notebooks/B-algorithm-guide.ipynb",
+      "sha256": "134415cba6fe89d37c4159e0140b0c7a13ab8cd2e295288b3a02a3cbfab38aee",
+      "code_cells": 2,
+      "figures": 0,
+      "markdown_chars": 1574
+    },
+    {
+      "file": "notebooks/C-advanced.ipynb",
+      "sha256": "b680aa66e70ebb4cce2607b6a553fb5cf7f51a4392cf9e8655d65b358f63edb0",
+      "code_cells": 3,
+      "figures": 1,
+      "markdown_chars": 1541
+    },
+    {
+      "file": "notebooks/D-sources-and-errata.ipynb",
+      "sha256": "be1bcec4e8e638c98932e0cdaf184738d1534053d6ff2e0844632def6580d784",
+      "code_cells": 1,
+      "figures": 0,
+      "markdown_chars": 2527
+    }
+  ],
+  "precommit_verification": {
+    "command": "python tools/build.py --pdf --test",
+    "pdf_sha256": "e3fb293daed3b1f3cb1079b30ed4daec210b39123113f0d242bb220d1cd649db",
+    "pages": 78,
+    "tests_passed": 36,
+    "tests_skipped": 0,
+    "notebook_fingerprints_valid": 20,
+    "reference_checksums_verified": 45,
+    "all_notebook_code_sources_match_git_base": "2c209a72dde0bd6e6e79180466693d22982d6c20"
+  }
+}

@@ -1,19 +1,48 @@
 {
-  "pages": 63,
+  "date": "2026-11-06",
+  "pages": 78,
   "chapter_destinations": 20,
-  "valid_internal_links": 137,
-  "external_links": 5,
+  "valid_internal_links": 166,
+  "external_https_links": 5,
+  "relative_document_links": [
+    "../docs/reading-guide.md",
+    "../docs/plain-language-glossary.md",
+    "../docs/plain-language-glossary.md"
+  ],
+  "external_link_availability_checked": false,
   "vector_figures": 23,
-  "rendered_pages": 63,
-  "layout_reviewed_pages": 63,
-  "contact_sheets_reviewed": 11,
+  "rendered_pages": 78,
+  "layout_reviewed_pages": 78,
+  "contact_sheets_reviewed": 7,
   "detail_pages_reviewed": [
-    27,
-    53,
-    57
+    33,
+    70
   ],
   "overfull_warnings": 0,
+  "underfull_warnings": 0,
   "missing_glyph_warnings": 0,
+  "undefined_reference_warnings": 0,
+  "latex_warnings": 0,
   "all_chapter_titles_found_by_poppler": true,
-  "pdf_sha256": "6701e174d7ef2bda609a8b5f0ccec6700a92c078343d5915b852cb131067bde8"
+  "updated_prose_found_by_poppler": true,
+  "pdf_sha256": "e3fb293daed3b1f3cb1079b30ed4daec210b39123113f0d242bb220d1cd649db",
+  "dependency_fix": {
+    "root_cause": "ctexbook.cls missing",
+    "method": "verified Debian packages extracted into writable TEXMFHOME",
+    "packages": [
+      "texlive-lang-chinese=2024.20250309-1",
+      "texlive-lang-cjk=2024.20250309-1"
+    ],
+    "signature_and_checksum_verification": true,
+    "install_script_repeat_run": "passed",
+    "full_environment_install_script_repeat_run": "passed"
+  },
+  "tests": {
+    "discovered": 36,
+    "passed": 36,
+    "failed": 0,
+    "skipped": 0,
+    "pdf_smoke_test": "executed and passed"
+  },
+  "text_extraction": "Poppler pdftotext; pypdf extraction alone does not decode these CJK fonts"
 }
